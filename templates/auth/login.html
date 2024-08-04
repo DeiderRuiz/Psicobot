@@ -1,0 +1,57 @@
+<!-- Vista del login -->
+{% extends 'guest.html' %}
+{% block title %}Iniciar Sesión{% endblock %}
+{% block content %}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class=flashes>
+                {% for message in messages %}
+                    <div class="flex items-center p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-100" role="alert">
+                        <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                        </svg>
+                        <li class="font-medium">{{ message }}</li>
+                    </div>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+    <form action="IniciarSesion" method="post">
+        {{ form.hidden_tag() }}
+        <!-- Mensajes de error -->
+        {% if mensaje %}
+            <div class="flex items-center p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50" role="alert">
+              <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+              </svg>
+              <span class="sr-only">Info</span>
+                <div>
+                    <span class="font-medium">{{mensaje}}</span>
+                </div>
+            </div>
+        {% endif %}
+        <div class="mt-2">
+            {{ form.nombre_usuario.label(class_='block font-medium text-left text-sm') }}
+            {{ form.nombre_usuario(class_='mt-1 appearance-none rounded-lg relative block w-full px-3 py-2 bg-gray-100 border border-verde-paris focus:outline-none focus:ring-1 focus:ring-verde-uajs focus:border-verde-uajs focus:bg-gray-50 focus:z-10 shadow-sm') }}
+        </div>
+        <div class="mt-2">
+            {{ form.password.label(class_='block font-medium text-left text-sm') }}
+            {{ form.password(class_='mt-1 appearance-none rounded-lg relative block w-full px-3 py-2 bg-gray-100 border border-verde-paris focus:outline-none focus:ring-1 focus:ring-verde-uajs focus:border-verde-uajs focus:bg-gray-50 focus:z-10 shadow-sm', **{'aria-describedby': 'Reset'}) }}
+        </div>
+        <div class="mt-4">
+            {{ form.submit(class_='flex justify-center w-full mb-1 px-4 py-2 bg-verde-uajs border border-verde-paris rounded-md text-white uppercase tracking-widest hover:bg-verde-paris focus:bg-verde-paris active:bg-verde-uajs focus:outline-none focus:ring-2 focus:ring-verde-paris focus:ring-offset-2 transition ease-in-out duration-150') }}
+        </div>
+    </form>
+    <div class="text-left">
+        <span class="text-sm">¿No tienes cuenta?
+            <a href="{{ url_for('register') }}" class="text-verde-uajs" id="Reset">
+                Regístrate
+            </a>
+        </span>
+    </div>
+    <div class="text-right">
+        <a href="{{ url_for('ForbiddenPassword') }}" class="text-verde-uajs text-sm">
+            ¿Olvidaste tu contraseña?
+        </a>
+    </div>
+{% endblock %}

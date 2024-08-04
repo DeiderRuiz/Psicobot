@@ -1,0 +1,54 @@
+<!-- Plantilla Para las vistas que requieren iniciar sesión -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Bree+Serif&display=swap" rel="stylesheet" />
+    <link rel="icon" type="Images/ico" href="{{url_for('static',filename='favicon.ico')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/main.css')}}">
+    <!-- Para usar VueJS -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <!-- Para usar AJAX -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <!-- Bloque para titulo de la página -->
+    <title>Psicobot - {% block title %}{% endblock %}</title>
+</head>
+<body class="font-bree-serif antialiased flex flex-col h-screen" id="app">
+  <nav class="bg-verde-uajs fixed w-full z-50 top-0 start-0 shadow-lg">
+    <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+      <!-- La URL del index cambia dependiendo del rol del usuario que inició sesión-->
+      <a href="{{ url_for('PanelDeAdministracion') if session['id_roles'] == 1 else url_for('PanelDeUsuario') }}" class="flex items-center space-x-3 rtl:space-x-reverse">
+          <div class="flex w-8 h-8 text-sm rounded-full bg-logo bg-cover bg-center"></div>
+          <span v-if="url == '/PanelDeAdministracion' || url == '/PanelDeUsuario'" class="self-center text-2xl whitespace-nowrap text-white">Psicobot</span>
+          <span v-else class="self-center text-2xl whitespace-nowrap text-white">Inicio</span>
+      </a>
+      <!-- Icono de perfil -->
+      <div class="relative ml-3">
+          <div>
+            <button type="button" @click="perfil = !perfil" class="relative flex rounded-full bg-verde-paris text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                <svg class="w-8 h-8 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                  <path fill-rule="evenodd" d="M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4h-4Z" clip-rule="evenodd"/>
+                </svg>
+            </button>
+          </div>
+          <!-- Dropdown del icono del perfil (Funciona con Vue JS) -->
+          <div v-if="perfil" class="absolute right-0 z-10 mt-2 min-w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+            <!-- Nombre y correo del usuario -->
+            <p class="block px-4 py-2 text-gray-700">{{ session['nombre_usuario'] }}</p>
+            <p class="block px-4 py-2 text-sm text-gray-700">{{ session['email'] }}</p>
+            <hr>
+            <!-- Bloque para el link hacia el perfil del usuario -->
+            <a href="{{ url_for('perfil', nombre_usuario=perfil_usuario.nombre_usuario) }}" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Perfil</a>
+            <a href="{{ url_for('CerrarSesion') }}" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">Cerrar Sesión</a>
+          </div>
+      </div>
+    </div>
+  </nav>
+  <main class="mt-16 bg-gray-50 h-screen">
+    <!-- Bloque de contenido principal -->
+    {% block main %}
+    {% endblock %}
+  </main>
+  <script src="{{ url_for('static', filename='js/Vue.js') }}"></script>
+</body>
+</html>

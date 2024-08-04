@@ -1,0 +1,133 @@
+<!-- Vista de los detales de la cita de orientación psicologica -->
+{% extends 'applayout.html' %}
+{% block title %}Solicitudes{% endblock %}
+{% block main %}
+    <div class="bg-gray-50 pb-6">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class=flashes>
+                    {% for category, message in messages %}
+                        {% if category == 'success' %}
+                            <div class="flex items-center p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-100" role="alert">
+                                <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                                </svg>
+                                <li class="font-medium">
+                                    {{ message }} <a href="{{ url_for('PanelDeAdministracion') if session['id_roles'] == 1 else url_for('PanelDeUsuario') }}" class="text-green-900 hover:text-green-700 border-b border-green-800">
+                                        Volver al inicio
+                                    </a>
+                                </li>
+                            </div>
+                        {% elif category == 'error' %}
+                            <div class="flex items-center p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-100" role="alert">
+                                <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                                </svg>
+                                <li class="font-medium">{{ message }}</li>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+        <div class="grid grid-cols-3 gap-2 flex justify-center items-start px-6 mt-6">
+            <div class="col-span-1">
+                <h3 class="text-xl">Información del perfil</h3>
+                <p class="text-gray-800">Actualiza la información de tu perfil en Psicobot.</p>
+                <!-- <p class="text-gray-800">Usuario: {{ perfil_usuario.nombre_usuario }}</p>
+                <p class="text-gray-800">Correo Institucional: {{ perfil_usuario.email }}</p> -->
+            </div>
+            <div class="col-span-2 block p-6 bg-white border border-gray-200 rounded-lg shadow">
+                <form action="{{ url_for('perfil', nombre_usuario=session['nombre_usuario']) }}" method="post">
+                    {{ update_profile_form.hidden_tag() }}
+                    <div class="mt-2">
+                        {{ update_profile_form.nombre_usuario.label(class_='block font-medium text-left text-sm') }}
+                        {{ update_profile_form.nombre_usuario(class_='appearance-none text-sm rounded-lg relative block w-full px-3 py-2 bg-gray-100 border border-verde-paris focus:outline-none focus:ring-1 focus:ring-verde-uajs focus:border-verde-uajs focus:bg-gray-50 focus:z-10 shadow-sm') }}
+                        {% for error in update_profile_form.nombre_usuario.errors %}
+                            <div>
+                                <span class="block font-medium text-xs text-left text-red-800">{{ error }}</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="mt-2">
+                        {{ update_profile_form.email.label(class_='block font-medium text-left text-sm') }}
+                        {{ update_profile_form.email(class_='appearance-none text-sm rounded-lg relative block w-full px-3 py-2 bg-gray-100 border border-verde-paris focus:outline-none focus:ring-1 focus:ring-verde-uajs focus:border-verde-uajs focus:bg-gray-50 focus:z-10 shadow-sm') }}
+                        {% for error in update_profile_form.email.errors %}
+                            <div>
+                                <span class="block font-medium text-xs text-left text-red-800">{{ error }}</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="mt-4">
+                        {{ update_profile_form.updateProfile(class_='flex justify-center text-sm mb-2 px-4 py-2 bg-verde-uajs border border-verde-paris rounded-md text-white uppercase tracking-widest hover:bg-verde-paris focus:bg-verde-paris active:bg-verde-uajs focus:outline-none focus:ring-2 focus:ring-verde-paris focus:ring-offset-2 transition ease-in-out duration-150') }}
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="grid grid-cols-3 gap-2 flex justify-center items-start px-6 mt-6">
+            <div class="col-span-1">
+                <h3 class="text-xl">Actualizar Contraseña</h3>
+                <p class="text-gray-800">Actualiza tu contraseña para mantener segura tu cuenta.</p>
+            </div>
+            <div class="col-span-2 block p-6 bg-white border border-gray-200 rounded-lg shadow">
+                <form action="{{ url_for('perfil', nombre_usuario=session['nombre_usuario']) }}" method="post">
+                    {{ change_password_form.hidden_tag() }}
+                    <div class="mt-2">
+                        {{ change_password_form.password.label(class_='block font-medium text-left text-sm') }}
+                        {{ change_password_form.password(class_='appearance-none text-sm rounded-lg relative block w-full px-3 py-2 bg-gray-100 border border-verde-paris focus:outline-none focus:ring-1 focus:ring-verde-uajs focus:border-verde-uajs focus:bg-gray-50 focus:z-10 shadow-sm') }}
+                        {% for error in change_password_form.password.errors %}
+                            <div>
+                                <span class="block font-medium text-xs text-left text-red-800">{{ error }}</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="mt-2">
+                        {{ change_password_form.confirm_password.label(class_='block font-medium text-left text-sm') }}
+                        {{ change_password_form.confirm_password(class_='appearance-none text-sm rounded-lg relative block w-full px-3 py-2 bg-gray-100 border border-verde-paris focus:outline-none focus:ring-1 focus:ring-verde-uajs focus:border-verde-uajs focus:bg-gray-50 focus:z-10 shadow-sm') }}
+                        {% for error in change_password_form.confirm_password.errors %}
+                            <div>
+                                <span class="block font-medium text-xs text-left text-red-800">{{ error }}</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="mt-4">
+                        {{ change_password_form.updatePassword(class_='flex justify-center text-sm mb-2 px-4 py-2 bg-verde-uajs border border-verde-paris rounded-md text-white uppercase tracking-widest hover:bg-verde-paris focus:bg-verde-paris active:bg-verde-uajs focus:outline-none focus:ring-2 focus:ring-verde-paris focus:ring-offset-2 transition ease-in-out duration-150') }}
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% if perfil_usuario.id_roles == 2 %}
+            <div class="grid grid-cols-3 gap-2 flex justify-center items-start px-6 mt-6">
+                <div class="col-span-1">
+                    <h3 class="text-xl">Borrar Cuenta</h3>
+                    <p class="text-gray-800">Puedes borrar tu cuenta si así lo prefieres</p>
+                </div>
+                <div class="col-span-2 block p-6 bg-white border border-gray-200 rounded-lg shadow">
+                    <p>Por favor, ten en cuenta que borrar tu cuenta en Psicobot es una acción irreversible. Una vez que tu cuenta sea borrada, todos tus datos serán eliminados permanentemente y no podrán ser recuperados.</p>
+                    <div class="mt-4">
+                        <button @click="ventana = true" class="flex justify-center text-sm mb-2 px-4 py-2 bg-red-500 border border-red-800 rounded-md text-white uppercase tracking-widest hover:bg-red-800 focus:bg-red-800 active:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-800 focus:ring-offset-2 transition ease-in-out duration-150">Borrar cuenta</button>
+                    </div>
+                </div>
+                <div v-if="ventana" class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 bottom-0 left-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
+                    <div class="relative p-4 w-full max-w-md max-h-full">
+                        <div class="relative bg-white rounded-lg shadow">
+                            <div class="p-4 md:p-5 text-center">
+                                <svg class="mx-auto mb-4 text-red-500 w-12 h-12" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                                </svg>
+                                <h3 class="mb-5 text-lg font-normal">¿Estás seguro de que quieres borrar tu cuenta? Esta acción no se puede deshacer.</h3>
+                                <div class="flex items-center justify-center">
+                                    <form action="{{ url_for('perfil', nombre_usuario=session['nombre_usuario']) }}" method="post">
+                                        {{ delete_account_form.hidden_tag() }}
+                                        {{ delete_account_form.DeleteAccount(class_='flex justify-center text-sm mb-2 mr-2 px-4 py-2 bg-red-500 border border-red-800 rounded-md text-white uppercase tracking-widest hover:bg-red-800 focus:bg-red-800 active:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-800 focus:ring-offset-2 transition ease-in-out duration-150') }}
+                                    </form>
+                                    <button @click="ventana = false" class="flex justify-center text-sm mb-2 ml-2 px-4 py-2 bg-verde-uajs border border-verde-paris rounded-md text-white uppercase tracking-widest hover:bg-verde-paris focus:bg-verde-paris active:bg-verde-uajs focus:outline-none focus:ring-2 focus:ring-verde-paris focus:ring-offset-2 transition ease-in-out duration-150">No, cancelar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

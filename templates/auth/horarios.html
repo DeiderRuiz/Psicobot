@@ -1,0 +1,176 @@
+<!-- Vista donde el usuario crea los horarios de atención personalizados -->
+{% extends 'applayout.html' %}
+{% block title %}Horarios{% endblock %}
+{% block main %}
+    <div class="grid grid-cols-2 gap-2" style="height: calc(100vh - 64px);">
+        <div class="p-6 flex items-start justify-center">
+            <div class="rounded-lg bg-white shadow p-5">
+                <h1 class="text-center text-xl text-verde-uajs">Horario de atención</h1>
+                {% if not horarios %}
+                    <p class="text-verde-uajs text-center">
+                        No Hay horarios establecidos. Crea uno nuevo
+                    </p>
+                {% else %}
+                    <!-- Bucle de los horarios de atención -->
+                    {% for horario in horarios %}
+                        <div class="w-full border-b border-gray-200 rounded-t-lg">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-verde-uajs mt-2">{{ horario['dia'] }}</h3>
+                                <button @click="showModal('{{ horario['dia'] }}')" class="flex justify-center text-xs p-1 bg-red-500 border border-red-600 rounded-md text-white uppercase tracking-widest hover:bg-red-600 focus:bg-red-600 active:bg-red-uajs focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 transition ease-in-out duration-150">
+                                    <svg class="w-4 h-4 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div v-if="ventana === '{{ horario['dia'] }}'" class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 bottom-0 left-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
+                                <div class="relative p-4 w-full max-w-md max-h-full">
+                                    <div class="relative bg-white rounded-lg shadow">
+                                        <div class="p-4 md:p-5 text-center">
+                                            <svg class="mx-auto mb-4 text-red-500 w-12 h-12" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                                            </svg>
+                                            <h3 class="mb-5 text-lg font-normal">¿Estás seguro de que quieres borrar el horario de atención para el día <span class="text-verde-uajs">{{ horario['dia'] }}</span>? Esta acción no se puede deshacer.</h3>
+                                            <div class="flex items-center justify-center">
+                                                <form method="post" action="{{ url_for('eliminar_horario', dia=horario['dia']) }}">
+                                                    {{ form.hidden_tag() }}
+                                                    <button type="submit" class="flex justify-center text-sm mb-2 ml-2 px-4 py-2 bg-red-500 border border-red-600 rounded-md text-white uppercase tracking-widest hover:bg-red-600 focus:bg-red-600 active:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 transition ease-in-out duration-150">Sí, borrar</button>
+                                                </form>
+                                                <button @click="closeModal()" class="flex justify-center text-sm mb-2 ml-2 px-4 py-2 bg-verde-uajs border border-verde-paris rounded-md text-white uppercase tracking-widest hover:bg-verde-paris focus:bg-verde-paris active:bg-verde-uajs focus:outline-none focus:ring-2 focus:ring-verde-paris focus:ring-offset-2 transition ease-in-out duration-150">No, cancelar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Verifica si hay un horario en la base de datos y si no lo hay muestra el horario por defecto -->
+                            {% if horario['hora_inicio_am'] is none and horario['hora_fin_am'] is none %}
+                                <p>Jornada de la mañana: No disponible</p>
+                            {% else %}
+                                <p>Jornada de la mañana: {{ horario['hora_inicio_am'] }} - {{ horario['hora_fin_am'] }}</p>
+                            {% endif %}
+                            {% if horario['hora_inicio_pm'] is none and horario['hora_fin_pm'] is none %}
+                                <p>Jornada de la tarde: No disponible</p>
+                            {% else %}
+                                <p>Jornada de la tarde: {{ horario['hora_inicio_pm'] }} - {{ horario['hora_fin_pm'] }}</p>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    <p class="text-center text-xs text-gray-800 mt-2">
+                        Este es el horario para los próximos 7 días.
+                    </p>
+                    <p class="text-center text-xs text-gray-800 mt-2">Configure su horario personalizado.</p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="p-6 flex items-start justify-center">
+            <div class="w-full rounded-lg bg-white shadow p-4 text-center">
+                <h1 class="text-2xl text-verde-uajs">Crear o actualizar horario de atención</h1>
+                <p class="text-gray-800 text-xs">
+                    Para crear un horario de atención seleccione un día y complete las horas para una o ambas jornadas.<br>Si el día seleccionado ya tiene horario establecido se actualizará al nuevo horario.
+                </p>
+                <form action="Horarios" method="post">
+                    <!-- Mensajes de error si las reglas de validación en general no se cumplen -->
+                    {% if mensaje %}
+                        <div class="flex items-center p-2 mb-2 text-sm text-red-800 rounded-lg bg-red-50" role="alert">
+                            <svg class="flex-shrink-0 inline w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                            </svg>
+                            <span class="sr-only">Info</span>
+                            <div>
+                                <span class="font-medium">{{mensaje}}</span>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            <ul class=flashes>
+                                {% for category, message in messages %}
+                                    {% if category == 'success' %}
+                                        <div class="flex items-center p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-100" role="alert">
+                                            <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                                            </svg>
+                                            <li class="font-medium">{{ message }}</li>
+                                        </div>
+                                        {% endif %}
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    {% endwith %}
+                    {{ form.hidden_tag() }}
+                    <div class="mt-2">
+                        {{ form.dia.label(class_='block font-medium text-sm text-left') }}
+                        {{ form.dia(class_='mt-1 appearance-none rounded-lg relative block w-full text-sm p-2 bg-gray-100 border border-verde-paris focus:outline-none focus:ring-1 focus:ring-verde-uajs focus:border-verde-uajs focus:bg-gray-50 focus:z-10 shadow-sm') }}
+                    </div>
+                    <div class="mt-2">
+                        <h6 class="text-left">Jornada de la mañana</h6>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div class="mt-2 mr-2">
+                                {{ form.hora_inicio_am.label(class_='block font-medium text-sm text-left') }}
+                                {{ form.hora_inicio_am(class_='mt-1 appearance-none rounded-lg relative block w-full text-sm p-2 bg-gray-100 border border-verde-paris focus:outline-none focus:ring-1 focus:ring-verde-uajs focus:border-verde-uajs focus:bg-gray-50 focus:z-10 shadow-sm') }}
+                                <!-- Mensajes de error pero para las reglas de un campo en concreto -->
+                                {% if form.hora_inicio_am.errors %}
+                                    <ul class="errors">
+                                        {% for error in form.hora_inicio_am.errors %}
+                                            <li class="text-xs text-red-500 text-left" role="alert">
+                                                <span class="font-medium">{{ error }}</span>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </div>
+                            <div class="mt-2 ml-2">
+                                {{ form.hora_fin_am.label(class_='block font-medium text-sm text-left') }}
+                                {{ form.hora_fin_am(class_='mt-1 appearance-none rounded-lg relative block w-full text-sm p-2 bg-gray-100 border border-verde-paris focus:outline-none focus:ring-1 focus:ring-verde-uajs focus:border-verde-uajs focus:bg-gray-50 focus:z-10 shadow-sm') }}
+                                {% if form.hora_fin_am.errors %}
+                                    <ul class="errors">
+                                        {% for error in form.hora_fin_am.errors %}
+                                            <li class="text-xs text-red-500 text-left" role="alert">
+                                                <span class="font-medium">{{ error }}</span>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <h6 class="text-left">Jornada de la tarde</h6>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div class="mt-2 mr-2">
+                                {{ form.hora_inicio_pm.label(class_='block font-medium text-sm text-left') }}
+                                {{ form.hora_inicio_pm(class_='mt-1 appearance-none rounded-lg relative block w-full text-sm p-2 bg-gray-100 border border-verde-paris focus:outline-none focus:ring-1 focus:ring-verde-uajs focus:border-verde-uajs focus:bg-gray-50 focus:z-10 shadow-sm') }}
+                                {% if form.hora_inicio_pm.errors %}
+                                    <ul class="errors">
+                                        {% for error in form.hora_inicio_pm.errors %}
+                                            <li class="text-xs text-red-500 text-left" role="alert">
+                                                <span class="font-medium">{{ error }}</span>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </div>
+                            <div class="mt-2 ml-2">
+                                {{ form.hora_fin_pm.label(class_='block font-medium text-sm text-left') }}
+                                {{ form.hora_fin_pm(class_='mt-1 appearance-none rounded-lg relative block w-full text-sm p-2 bg-gray-100 border border-verde-paris focus:outline-none focus:ring-1 focus:ring-verde-uajs focus:border-verde-uajs focus:bg-gray-50 focus:z-10 shadow-sm') }}
+                                {% if form.hora_fin_pm.errors %}
+                                    <ul class="errors">
+                                        {% for error in form.hora_fin_pm.errors %}
+                                            <li class="text-xs text-red-500 text-left" role="alert">
+                                                <span class="font-medium">{{ error }}</span>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-2 flex">
+                        {{ form.submit(class_='flex justify-center mr-2 text-sm p-2 bg-verde-uajs border border-verde-paris rounded-md text-white uppercase tracking-widest hover:bg-verde-paris focus:bg-verde-paris active:bg-verde-uajs focus:outline-none focus:ring-2 focus:ring-verde-paris focus:ring-offset-2 transition ease-in-out duration-150') }}
+                        <a href="{{ url_for('PanelDeAdministracion') }}" class="ml-2 flex justify-center text-sm p-2 bg-verde-uajs border border-verde-paris rounded-md text-white uppercase tracking-widest hover:bg-verde-paris focus:bg-verde-paris active:bg-verde-uajs focus:outline-none focus:ring-2 focus:ring-verde-paris focus:ring-offset-2 transition ease-in-out duration-150">Regresar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/Vue.js') }}"></script>
+{% endblock %}

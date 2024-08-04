@@ -1,0 +1,23 @@
+<!-- Plantilla de Invitado (Se extiende de Base.html) -->
+{% extends 'base.html' %}
+{% block main %}
+  <main class="flex flex-1 grid grid-cols-1 md:grid-cols-2 gap-2 h-screen mt-16 bg-gray-100">
+    <div class="relative bg-uajs bg-cover bg-center hidden md:block"></div>
+    <div class="flex items-center justify-center p-6 bg-uajs bg-cover bg-center md:bg-none">
+      <!-- Tarjeta -->
+      <div class="w-96 rounded-lg bg-white shadow">
+        <div class="p-5 text-center">
+          <!-- Bloque de titulo de la tarjeta -->
+          {% block titulo %}
+            <h3 class="mb-2 tracking-tight text-3xl">Psicobot</h3>
+          {% endblock %}
+          <p>Asistente Psicologico Virtual</p>
+          <!-- Bloque de contenido de la tarjeta -->
+          {% block content %}
+            <!-- bloque de contenido -->
+          {% endblock %}
+        </div>
+      </div>
+    </div>
+  </main>
+{% endblock %}

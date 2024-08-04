@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}Rutas De Atención{% endblock %}
+{% block main %}
+    <main class="mt-16 bg-gray-100 flex flex-col" style="height: calc(100vh - 64px);">
+        <h1 class="text-center text-verde-uajs text-3xl my-3 flex-shrink-0">RUTA DE ATENCIÓN PSICOLÓGICA</h1>
+        <div class="w-full flex-1 flex justify-center items-center overflow-hidden">
+            <img class="max-w-full max-h-full object-scale-down" src="{{ url_for('static', filename='assets/images/ruta.png') }}">
+        </div>
+    </main>
+{% endblock %}

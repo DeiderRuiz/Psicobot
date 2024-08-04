@@ -1,0 +1,81 @@
+<!-- Vita del usuario (AQUÍ ESTÁ EL CHATBOT) -->
+{% extends 'applayout.html' %}
+{% block title %}Chatbot{% endblock %}
+{% block main %}
+    <div class="flex justify-center" style="height: calc(100vh - 64px);">
+        <div class="w-1/3 p-6 overflow-auto">
+            <img src="{{ url_for('static', filename='assets/images/UAJS2.jpg') }}" class="w-full border border-verde-uajs rounded-lg shadow mb-5">
+            <div class="w-full bg-verde-paris bg-opacity-40 border border-verde-uajs rounded-lg shadow">
+                <div class="p-5">
+                    <h5 class="mb-2 text-lg md:text-2xl text-center font-bold tracking-tight">Solicitud de Orientación Psicológica</h5>
+                    <hr>
+                    <p class="mb-3 font-normal text-gray-800 text-xs md:text-base">La coordinación de desarrollo humano ofrece orientación psicológica de forma individual y gratuita para estudiantes y egresados, si necesitas atención psicológica por parte de un profesional, solicita una cita de orientación psicológica para cualquiera de los horarios disponibles.</p>
+                    <a href="{{ url_for('SolicitarCita') }}" class="inline-flex items-center px-3 py-2 text-sm font-medium text-xs text-center bg-verde-uajs border border-verde-paris rounded-md text-white uppercase tracking-widest hover:bg-verde-paris focus:bg-verde-paris active:bg-verde-uajs focus:outline-none focus:ring-2 focus:ring-verde-paris focus:ring-offset-2 transition ease-in-out duration-150 md:text-base">
+                        Solicitar Cita
+                         <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2 hidden md:block" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- Colunma donde se encuentra el chatbot -->
+        <div class="w-2/3 px-6 flex flex-col justify-end bg-gray-100 overflow-hidden">
+            <div id="chatDiv" class="flex flex-col items-stretch overflow-auto">
+                <!-- Muestra un par de figuras (imagenes) con instrucciones y limtaciones del chatbot -->
+                <div class="py-6 px-2 md:flex md:items-start md:justify-around">
+                    <figure class="relative w-full md:w-1/2 md:mr-3">
+                        <img class="rounded-lg" src="{{ url_for('static', filename='assets/images/psico.jpg') }}" alt="image description">
+                        <figcaption class="absolute px-4 py-1 text-xs bg-black/50 text-white bottom-0 rounded-b-lg md:text-sm">
+                            <p>
+                                ¡Hola! Soy Psicobot. Mi objetivo es brindarte apoyo emocional y orientación psicológica para manejar tus emociones. Aunque ofrezco herramientas y técnicas psicológicas, siempre es recomendable consultar a un especialista para una evaluación completa. ¡Comparte tus inquietudes conmigo!
+                            </p>
+                            <p class="md:hidden block">
+                                Recuerda que la coordinación de desarrollo humano de la Universidad Antonio José De Sucre, ofrece orientación psicológica gratuita a estudiantes y egresados. Si necesitas atención más especializada, no dudes en aprovechar este recurso. Estoy aquí para escucharte, ofrecerte herramientas y acompañarte en tu crecimiento personal.
+                            </p>
+                        </figcaption>
+                    </figure>
+                    <figure class="relative w-1/2 md:ml-3 hidden md:block">
+                        <img class="rounded-lg" src="{{ url_for('static', filename='assets/images/psico3.jpg') }}" alt="image description">
+                        <figcaption class="absolute px-4 py-1 text-xs bg-black/50 text-white bottom-0 rounded-b-lg md:text-sm">
+                            <p>
+                                Recuerda que la coordinación de desarrollo humano de la Universidad Antonio José De Sucre, ofrece orientación psicológica gratuita a estudiantes y egresados. Si necesitas atención más especializada, no dudes en aprovechar este recurso. Estoy aquí para escucharte, ofrecerte herramientas y acompañarte en tu crecimiento personal.
+                            </p>
+                        </figcaption>
+                    </figure>
+                </div>
+                <hr class="shadow">
+                <!-- Bucleque muestra los mensajes -->
+                {% for mensaje in conversacion %}
+                    <!-- Muestra los mensajes del USUARIO en una burbuja color VERDE DE PARÍS -->
+                    {% if mensaje.rol == 'usuario' %}
+                        <div class="flex items-end justify-end">
+                            <div class="bg-verde-paris rounded-xl rounded-br-none p-2.5 mx-2 my-4 self-end shadow-lg" style="max-width: 66.67%;">
+                                <p class="text-white text-sm">{{ mensaje.mensaje }}</p>
+                            </div>
+                            <div class="flex w-8 h-8 text-sm rounded-full bg-user bg-cover bg-center"></div>
+                        </div>
+                    <!-- Muestra los mensajes escritos por el MODELO en una burbuja color AZUL -->
+                    {% else %}
+                        <div class="flex items-end justify-start">
+                            <div class="flex w-8 h-8 text-sm rounded-full bg-chatbot bg-cover bg-center"></div>
+                            <div class="bg-heaven rounded-xl rounded-bl-none p-2.5 mx-2 my-4 self-start shadow-lg" style="max-width: 66.67%;">
+                                <p class="text-white text-sm">{{ mensaje.mensaje }}</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <form action="PanelDeUsuario" method="post" id="chatForm">
+                <div class="my-6 relative">
+                    <textarea id="chat" name="chat" class="resize-none pr-12 bg-gray-50 border border-verde-uajs text-gray-900 text-sm rounded-lg focus:outline-none focus:ring-1 focus:ring-verde-paris focus:border-verde-paris block w-full p-2.5 overflow-hidden" placeholder="Escribe un mensaje" autocomplete="off" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'" onkeydown="checkSubmit(event)"></textarea>
+                    <button type="submit" id="send" class="absolute right-2 top-1/2 transform -translate-y-1/2 px-4 py-2 bg-transparent focus:outline-none">
+                        <svg class="w-6 h-6 text-verde-paris transform rotate-90" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd" d="M12 2c.4 0 .8.3 1 .6l7 18a1 1 0 0 1-1.4 1.3L13 19.5V13a1 1 0 1 0-2 0v6.5L5.4 22A1 1 0 0 1 4 20.6l7-18a1 1 0 0 1 1-.6Z" clip-rule="evenodd"/>
+                        </svg>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

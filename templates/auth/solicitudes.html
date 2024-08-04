@@ -1,0 +1,37 @@
+<!-- Vista donde el administrador ve todas las solicitudes de citas de orientación psicologica -->
+{% extends 'applayout.html' %}
+{% block title %}Solicitudes{% endblock %}
+{% block main %}
+    <div class="flex justify-center items-start p-6">
+        <div class="block w-full py-3 bg-white border border-gray-200 rounded-lg shadow">
+            <div class="grid grid-cols-3 gap-2 px-2">
+                <h5 class="text-left">Solicitante</h5>
+                <h5 class="text-left">Motivo de consulta</h5>
+                <h5 class="text-right">Fecha de la cita</h5>
+            </div>
+            <hr>
+            <!-- Bucle para mostrar las citas no leídas -->
+            {% for cita in citas_no_leidas %}
+                <a href="{{ url_for('detalle_cita', id=cita.id) }}" class="grid grid-cols-3 gap-2 block w-full p-2 bg-white text-gray-800 border-b border-gray-200 transition-colors duration-300 hover:bg-verde-uajs hover:bg-opacity-25">
+                    <p class="text-sm text-left">{{ cita.nombres.title() }} {{ cita.apellidos.title() }}</p>
+                    <p class="text-sm text-left">{{ cita.asunto.capitalize() }}</p>
+                    <div class="flex justify-end text-sm text-right">
+                        <p class="text-sm text-right mx-1">{{ cita.fecha.title() }} {{ cita.hora.upper() }}</p>
+                        <svg class="w-5 h-5 text-verde-uajs" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v5a1 1 0 1 0 2 0V8Zm-1 7a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12Z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                </a>
+            {% endfor %}
+            <!-- Bucle para mostrar las citas leídas en orden inverso -->
+            {% for cita in citas_leidas|reverse %}
+                <a href="{{ url_for('detalle_cita', id=cita.id) }}" class="grid grid-cols-3 gap-2 block w-full p-2 bg-gray-100 text-gray-600 border-b border-gray-200 transition-colors duration-300 hover:bg-verde-uajs hover:bg-opacity-25">
+                    <p class="text-sm text-left">{{ cita.nombres.title() }} {{ cita.apellidos.title() }}</p>
+                    <p class="text-sm text-left">{{ cita.asunto.capitalize() }}</p>
+                    <p class="text-sm text-right">{{ cita.fecha.title() }} {{ cita.hora.upper() }}</p>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+{% endblock %}
