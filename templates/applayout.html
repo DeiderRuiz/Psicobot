@@ -1,0 +1,70 @@
+<!-- Plantilla Para las vistas que requieren iniciar sesión -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Bree+Serif&display=swap" rel="stylesheet" />
+    <link rel="icon" type="Images/ico" href="{{url_for('static',filename='favicon.ico')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/main.css')}}">
+    <!-- Para usar VueJS -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <!-- Para usar AJAX -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <!-- Bloque para titulo de la página -->
+    <title>Psicobot - {% block title %}{% endblock %}</title>
+</head>
+<body class="font-bree-serif antialiased flex flex-col h-screen dark:bg-gray-900" id="app">
+  <nav class="bg-verde-uajs fixed w-full z-50 top-0 start-0 shadow-lg dark:bg-gray-700">
+    <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+      <!-- La URL del index cambia dependiendo del rol del usuario que inició sesión-->
+      <a href="{{ url_for('panel_admin.PanelDeAdministracion') if session['id_roles'] == 1 else url_for('user.PanelDeUsuario') }}" class="flex items-center space-x-3 rtl:space-x-reverse">
+          <div class="flex w-8 h-8 text-sm rounded-full bg-logo bg-cover bg-center"></div>
+          <span v-if="url == '/PanelDeAdministracion' || url == '/PanelDeUsuario'" class="self-center text-2xl whitespace-nowrap text-white">Psicobot</span>
+          <span v-else class="self-center text-2xl whitespace-nowrap text-white">Inicio</span>
+      </a>
+      <!-- Icono de perfil -->
+      <div class="relative ml-3">
+          <button type="button" @click="perfil = !perfil" class="flex items-center justify-end hover:scale-110 ease-in-out delay-150 duration-300" aria-expanded="false" aria-haspopup="true">
+              <span class="block px-2 py-2 text-white">{{ session['nombre_usuario'] }}</span>
+              <div class="relative flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 dark:bg-plata">
+                  <svg class="w-8 h-8 text-verde-paris dark:text-gray-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                      <path fill-rule="evenodd" d="M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4h-4Z" clip-rule="evenodd"/>
+                  </svg>
+              </div>
+          </button>
+          <!-- Dropdown del icono del perfil (Funciona con Vue JS) -->
+          <div v-if="perfil" class="absolute right-0 z-10 mt-2 min-w-48 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gris-antracita" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+            <!-- Nombre y correo del usuario -->
+            <p class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200">{{ session['email'] }}</p>
+            <hr>
+            <!-- Bloque para el link hacia el perfil del usuario -->
+            <a class="block flex items-center justify-between px-4 py-2 text-gray-700 hover:bg-gris-antracita hover:text-plata dark:text-white transition duration-700 dark:hover:bg-plata dark:hover:text-gris-antracita" href="{{ url_for('profile.perfil', nombre_usuario=perfil_usuario.nombre_usuario) }}" role="menuitem" tabindex="-1" id="user-menu-item-0">
+                <div class="flex items-center justify-start">
+                    <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd" d="M17 10v1.126c.367.095.714.24 1.032.428l.796-.797 1.415 1.415-.797.796c.188.318.333.665.428 1.032H21v2h-1.126c-.095.367-.24.714-.428 1.032l.797.796-1.415 1.415-.796-.797a3.979 3.979 0 0 1-1.032.428V20h-2v-1.126a3.977 3.977 0 0 1-1.032-.428l-.796.797-1.415-1.415.797-.796A3.975 3.975 0 0 1 12.126 16H11v-2h1.126c.095-.367.24-.714.428-1.032l-.797-.796 1.415-1.415.796.797A3.977 3.977 0 0 1 15 11.126V10h2Zm.406 3.578.016.016c.354.358.574.85.578 1.392v.028a2 2 0 0 1-3.409 1.406l-.01-.012a2 2 0 0 1 2.826-2.83ZM5 8a4 4 0 1 1 7.938.703 7.029 7.029 0 0 0-3.235 3.235A4 4 0 0 1 5 8Zm4.29 5H7a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h6.101A6.979 6.979 0 0 1 9 15c0-.695.101-1.366.29-2Z" clip-rule="evenodd"/>
+                    </svg>
+                    <span>Configuración</span>
+                </div>
+                <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7"/>
+                </svg>
+            </a>
+            <a class="block flex items-center justify-start px-4 py-2 text-gray-700 hover:bg-gris-antracita hover:text-plata transition duration-700 dark:text-white dark:hover:bg-plata dark:hover:text-gris-antracita" href="{{ url_for('logout.cerrar_sesion') }}" role="menuitem" tabindex="-1" id="user-menu-item-1">
+                <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H8m12 0-4 4m4-4-4-4M9 4H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h2"/>
+                </svg>
+                <span>Cerrar sesión</span>
+            </a>
+          </div>
+      </div>
+    </div>
+  </nav>
+  <main class="mt-16 bg-gray-50 h-screen dark:bg-gray-900 dark:text-white">
+    <!-- Bloque de contenido principal -->
+    {% block main %}
+    {% endblock %}
+  </main>
+  <script src="{{ url_for('static', filename='js/Vue.js') }}"></script>
+</body>
+</html>

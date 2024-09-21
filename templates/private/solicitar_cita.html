@@ -1,0 +1,166 @@
+{% extends 'applayout.html' %}
+{% block title %}Solicitar Orientación Psicologica{% endblock %}
+{% block main %}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-2 p-6">
+        <div class="flex items-start justify-center">
+            <div class="rounded-lg bg-white border border-gris-perla shadow p-5 dark:bg-gray-700 dark:text-white dark:border-gris-marengo">
+                <h1 class="text-center text-2xl">Horarios de atención</h1>
+                {% if not horarios %}
+                    <p class="text-verde-uajs text-center">
+                        La orientación psicológica no está disponible en este momento
+                    </p>
+                {% else %}
+                    <!-- Bucle de los horarios de atención -->
+                    {% for horario in horarios %}
+                        <div class="w-full border-b border-gris-perla rounded-t-lg dark:border-gris-marengo">
+                            <h3 class="text-verde-uajs mt-2 dark:text-verde-paris">{{ horario['dia'] }}</h3>
+                            <!-- Verifica si hay un horario en la base de datos y si no lo hay muestra el horario por defecto -->
+                            {% if horario['hora_inicio_am'] is none and horario['hora_fin_am'] is none %}
+                                <p class="text-sm md:text-base">Jornada de la mañana: No disponible</p>
+                            {% else %}
+                                <p class="text-sm md:text-base">Jornada de la mañana: {{ horario['hora_inicio_am'] }} - {{ horario['hora_fin_am'] }}</p>
+                            {% endif %}
+                            {% if horario['hora_inicio_pm'] is none and horario['hora_fin_pm'] is none %}
+                                <p class="text-sm md:text-base">Jornada de la tarde: No disponible</p>
+                            {% else %}
+                                <p class="text-sm md:text-base">Jornada de la tarde: {{ horario['hora_inicio_pm'] }} - {{ horario['hora_fin_pm'] }}</p>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    <p class="text-center text-xs text-gray-800 mt-2 dark:text-plata">Este es el horario de atención establecido para esta semana.</p>
+                    <p class="text-center text-xs text-gray-800 mt-2 dark:text-plata">Puede estar sujeto a cambios.</p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="flex items-center justify-center">
+            <div class="w-full rounded-lg bg-white border border-gris-perla shadow p-5 text-center dark:bg-gray-700 dark:text-white dark:border-gris-marengo">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        <ul class=flashes>
+                            {% for category, message in messages %}
+                                {% if category == 'success' %}
+                                    <div class="flex items-center p-2 mb-4 text-sm border border-green-800 text-green-800 rounded-lg bg-green-50 dark:bg-green-800 dark:text-green-50 dark:border-green-50" role="alert">
+                                        <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                                        </svg>
+                                        <li class="font-medium">{{ message }}</li>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endwith %}
+                <h1 class="text-center text-xl uppercase">Solicitar Cita De Orientación Psicologica</h1>
+                <form action="SolicitarCita" method="post">
+                    <!-- Campo oculto de Flask (Es como el CSRF de Blade en Laravel) -->
+                    {{ form.hidden_tag() }}
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                        <div class="mt-2">
+                            <!-- Muestra los campos creados en la clase (NotificarForm) en el main.py -->
+                            {{ form.numero_id.label(class_='block font-medium text-sm text-left') }}
+                            {{ form.numero_id(class_='mt-1 appearance-none rounded-lg relative block w-full text-sm p-2 bg-gray-100 border border-verde-paris focus:outline-none focus:ring-1 focus:ring-verde-uajs focus:border-verde-uajs focus:bg-gray-200 focus:z-10 shadow-sm dark:bg-gray-500 dark:focus:bg-gris-marengo') }}
+                            <!-- Muestra mensaje de error -->
+                            {% for error in form.numero_id.errors %}
+                                <div>
+                                    <span class="block font-medium text-xs text-left text-red-800 dark:text-red-400">{{ error }}</span>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="mt-2">
+                            {{ form.nombres.label(class_='block font-medium text-sm text-left') }}
+                            {{ form.nombres(class_='mt-1 appearance-none rounded-lg relative block w-full text-sm p-2 bg-gray-100 border border-verde-paris focus:outline-none focus:ring-1 focus:ring-verde-uajs focus:border-verde-uajs focus:bg-gray-200 focus:z-10 shadow-sm dark:bg-gray-500 dark:focus:bg-gris-marengo') }}
+                            {% for error in form.nombres.errors %}
+                                <div>
+                                    <span class="block font-medium text-xs text-left text-red-800 dark:text-red-400">{{ error }}</span>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="mt-2">
+                            {{ form.apellidos.label(class_='block font-medium text-sm text-left') }}
+                            {{ form.apellidos(class_='mt-1 appearance-none rounded-lg relative block w-full text-sm p-2 bg-gray-100 border border-verde-paris focus:outline-none focus:ring-1 focus:ring-verde-uajs focus:border-verde-uajs focus:bg-gray-200 focus:z-10 shadow-sm dark:bg-gray-500 dark:focus:bg-gris-marengo') }}
+                            {% for error in form.apellidos.errors %}
+                                <div>
+                                    <span class="block font-medium text-xs text-left text-red-800 dark:text-red-400">{{ error }}</span>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="mt-2">
+                            {{ form.email.label(class_='block font-medium text-sm text-left') }}
+                            {{ form.email(class_='mt-1 appearance-none rounded-lg relative block w-full text-sm p-2 bg-gray-100 border border-verde-paris focus:outline-none focus:ring-1 focus:ring-verde-uajs focus:border-verde-uajs focus:bg-gray-200 focus:z-10 shadow-sm dark:bg-gray-500 dark:focus:bg-gris-marengo') }}
+                            {% for error in form.email.errors %}
+                                <div>
+                                    <span class="block font-medium text-xs text-left text-red-800 dark:text-red-400">{{ error }}</span>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="mt-2">
+                            {{ form.cellphone.label(class_='block font-medium text-sm text-left') }}
+                            {{ form.cellphone(class_='mt-1 appearance-none rounded-lg relative block w-full text-sm p-2 bg-gray-100 border border-verde-paris focus:outline-none focus:ring-1 focus:ring-verde-uajs focus:border-verde-uajs focus:bg-gray-200 focus:z-10 shadow-sm dark:bg-gray-500 dark:focus:bg-gris-marengo') }}
+                            {% for error in form.cellphone.errors %}
+                                <div>
+                                    <span class="block font-medium text-xs text-left text-red-800 dark:red-400">{{ error }}</span>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                        <div class="mt-2 text-left col-span-1">
+                            {{ form.publico.label(class_='block font-medium text-sm text-left') }}
+                            {{ form.publico(class_='mt-1 appearance-none rounded-lg relative block w-full text-sm p-2 bg-gray-100 border border-verde-paris focus:outline-none focus:ring-1 focus:ring-verde-uajs focus:border-verde-uajs focus:bg-gray-200 focus:z-10 shadow-sm dark:bg-gray-500 dark:focus:bg-gris-marengo') }}
+                        </div>
+                        <div>
+                            <div class="mt-2">
+                                {{ form.programa.label(class_='block font-medium text-sm text-left') }}
+                                {{ form.programa(class_='mt-1 rounded-lg relative block w-full text-sm p-2 bg-gray-100 border border-verde-paris focus:outline-none focus:ring-1 focus:ring-verde-uajs focus:border-verde-uajs focus:bg-gray-200 focus:z-10 shadow-sm dark:bg-gray-500 dark:focus:bg-gris-marengo') }}
+                                {% for error in form.programa.errors %}
+                                    <div>
+                                        <span class="block font-medium text-xs text-left text-red-800 dark:text-red-400">{{ error }}</span>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <div class="mt-2">
+                                {{ form.semestre.label(class_='block font-medium text-sm text-left') }}
+                                {{ form.semestre(class_='mt-1 rounded-lg relative block w-full text-sm p-2 bg-gray-100 border border-verde-paris focus:outline-none focus:ring-1 focus:ring-verde-uajs focus:border-verde-uajs focus:bg-gray-200 focus:z-10 shadow-sm dark:bg-gray-500 dark:focus:bg-gris-marengo') }}
+                                {% for error in form.semestre.errors %}
+                                    <div>
+                                        <span class="block font-medium text-xs text-left text-red-800 dark:text-red-400">{{ error }}</span>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div>
+                            <div class="mt-2">
+                                {{ form.fecha.label(class_='block font-medium text-sm text-left') }}
+                                {{ form.fecha(class_='mt-1 appearance-none rounded-lg relative block w-full text-sm p-2 bg-gray-100 border border-verde-paris focus:outline-none focus:ring-1 focus:ring-verde-uajs focus:border-verde-uajs focus:bg-gray-200 focus:z-10 shadow-sm dark:bg-gray-500 dark:focus:bg-gris-marengo') }}
+                                {% for error in form.fecha.errors %}
+                                    <div>
+                                        <span class="block font-medium text-xs text-left text-red-800 dark:text-red-400">{{ error }}</span>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <div class="mt-2">
+                                {{ form.hora.label(class_='block font-medium text-sm text-left') }}
+                                {{ form.hora(class_='mt-1 appearance-none rounded-lg relative block w-full text-sm p-2 bg-gray-100 border border-verde-paris focus:outline-none focus:ring-1 focus:ring-verde-uajs focus:border-verde-uajs focus:bg-gray-200 focus:z-10 shadow-sm dark:bg-gray-500 dark:focus:bg-gris-marengo') }}
+                                {% for error in form.hora.errors %}
+                                    <div>
+                                        <span class="block font-medium text-xs text-left text-red-800 dark:text-red-400">{{ error }}</span>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        {{ form.asunto.label(class_='block font-medium text-sm text-left') }}
+                        {{ form.asunto(class_='mt-1 appearance-none rounded-lg relative block w-full text-sm p-2 bg-gray-100 border border-verde-paris focus:outline-none focus:ring-1 focus:ring-verde-uajs focus:border-verde-uajs focus:bg-gray-200 focus:z-10 shadow-sm dark:bg-gray-500 dark:focus:bg-gris-marengo', placeholder_='Sé específico en este punto. Ejemplo: ansiedad, depresión, conflicto familiar, entre otros.') }}
+                    </div>
+                    <div class="mt-2 flex justify-start items-center">
+                        {{ form.submit(class_='mr-2 flex justify-center text-sm p-2 bg-verde-uajs border border-verde-paris rounded-md text-white uppercase tracking-wider hover:bg-verde-paris hover:text-black hover:border-verde-uajs focus:bg-verde-paris focus:text-black focus:outline-none focus:ring-2 focus:ring-verde-paris focus:ring-offset-2 hover:scale-110 ease-in-out delay-150 duration-300') }}
+                        <a href="{{ url_for('user.PanelDeUsuario') }}" class="font-medium text-xs md:text-base text-verde-uajs hover:text-verde-paris uppercase underline hover:no-underline ml-2 dark:text-verde-paris dark:hover:text-verde-uajs">Regresar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

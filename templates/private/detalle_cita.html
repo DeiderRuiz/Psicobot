@@ -1,0 +1,41 @@
+<!-- Vista de los detales de la cita de orientación psicologica -->
+{% extends 'applayout.html' %}
+{% block title %}Solicitudes{% endblock %}
+{% block main %}
+    <div class="flex justify-center items-start p-5">
+        <div class="block p-5 bg-white border border-gris-perla rounded-lg shadow dark:bg-gray-700 dark:border-gris-marengo">
+            <h5 class="mb-2 text-lg md:text-2xl uppercase font-semibold text-center">Solicitud de cita de orientación psicológica</h5>
+            <!-- .upper, .title, .lower son caracteristicas de Flask que formatean el texto -->
+            <!-- .upper: todo mayusculas, .lower: todo minusculas, etc. -->
+            <h6 class="text-lg md:text-xl font-semibold">Información del solicitante</h6>
+            <ul class="max-w-md space-y-1 list-none capitalize text-sm md:text-base">
+                <li>Número de identificación: <span class="text-gray-700 italic dark:text-plata">{{ cita.numero_id.title() }}</span></li>
+                <li>Nombre completo: <span class="text-gray-700 italic dark:text-plata">{{ cita.apellidos.title() }} {{ cita.nombres.title() }}</span></li>
+                <li>Público: <span class="text-gray-700 italic dark:text-plata">{{ cita.publico.title()}}</span></li>
+                <li>Programa: <span class="text-gray-700 italic dark:text-plata">{{ cita.programa.title() }}</span></li>
+                <li>Semestre: <span class="text-gray-700 italic dark:text-plata">{{ cita.semestre }}</span></li>
+            </ul>
+            <h6 class="text-lg md:text-xl font-semibold">Contacto</h6>
+            <ul class="max-w-md space-y-1 list-none text-sm md:text-base">
+                <li>Correo Electrónico: <span class="text-gray-700 italic dark:text-plata">{{ cita.email.lower()}}</span></li>
+                <li>Teléfono: <span class="text-gray-700 italic dark:text-plata">{{ cita.cellphone }}</span></li>
+            </ul>
+            <h6 class="text-lg md:text-xl font-semibold">Fecha y hora para la cita</h6>
+            <ul class="max-w-md space-y-1 list-none text-sm md:text-base">
+                <li>Fecha: <span class="capitalize text-gray-700 italic dark:text-plata">{{ cita.fecha.title() }}</span></li>
+                <li>Hora: <span class="capitalize text-gray-700 italic dark:text-plata">{{ cita.hora.upper() }}</span></li>
+            </ul>
+            <h6 class="text-lg md:text-xl font-semibold">Motivo de consulta:</h6>
+            <p class="text-gray-700 text-sm md:text-base dark:text-plata">{{ cita.asunto.capitalize() }}</p>
+            <div class="flex justify-start items-center">
+                <a class="flex justify-center my-2 text-xs md:text-sm p-2 bg-verde-uajs border border-verde-paris rounded-md text-white uppercase tracking-wider hover:bg-verde-paris hover:text-black hover:border-verde-uajs focus:bg-verde-paris focus:text-black focus:outline-none focus:ring-2 focus:ring-verde-paris focus:ring-offset-2 hover:scale-110 ease-in-out delay-150 duration-300 mr-2" href="https://mail.google.com/mail/?view=cm&fs=1&to={{cita.email}}&su={{asunto}}" target="_blank">
+                    Responder al correo
+                </a>
+                <a class="font-medium text-xs md:text-base text-verde-uajs hover:text-verde-paris uppercase underline hover:no-underline ml-2 dark:text-verde-paris dark:hover:text-verde-uajs" href="{{ url_for('citas.Solicitudes') }}">
+                    Regresar
+                </a>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+{% endblock %}

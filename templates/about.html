@@ -1,0 +1,17 @@
+<!-- Plantilla de Invitado (Se extiende de Base.html) -->
+{% extends 'base.html' %}
+{% block title %}Acerca De{% endblock %}
+{% block main %}
+  <main class="flex flex-1 grid grid-cols-1 md:grid-cols-2 gap-2 h-screen mt-16 bg-gray-100 dark:bg-gray-900 overflow-hidden">
+    <div class="relative bg-uajs bg-cover bg-center hidden md:block"></div>
+    <div class="flex items-start justify-center p-6 overflow-auto">
+      <!-- Tarjeta -->
+      <div class="w-full rounded-lg bg-white border border-gris-perla shadow dark:bg-gray-700 dark:text-white dark:border-gris-marengo">
+        <div class="p-5 text-center">
+          <h1>Acerca De</h1>
+          <p>Lorem ipsum dolor set...</p>
+        </div>
+      </div>
+    </div>
+  </main>
+{% endblock %}

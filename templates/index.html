@@ -1,0 +1,14 @@
+<!-- Extensión de guest.html -->
+{% extends 'guest.html' %}
+{% block title %}Inicio{% endblock %}
+<!-- Bloque del contenido de la tarjeta -->
+{% block content %}
+    <div class="mt-5">
+        <a href="{{ url_for('login.login_view') }}" class="flex justify-center w-full mb-5 px-4 py-2 bg-verde-uajs border border-verde-paris rounded-md text-white uppercase tracking-wider hover:bg-verde-paris hover:text-black hover:border-verde-uajs focus:bg-verde-paris focus:text-black focus:outline-none focus:ring-2 focus:ring-verde-paris focus:ring-offset-2 transition ease-in-out duration-500">
+            Iniciar Sesión
+        </a>
+        <a href="{{ url_for('registro.register') }}" class="flex justify-center w-full mb-5 px-4 py-2 bg-verde-uajs border border-verde-paris rounded-md text-white uppercase tracking-wider hover:bg-verde-paris hover:text-black hover:border-verde-uajs focus:bg-verde-paris focus:text-black focus:outline-none focus:ring-2 focus:ring-verde-paris focus:ring-offset-2 transition ease-in-out duration-500">
+            Registrarse
+        </a>
+    </div>
+{% endblock %}
