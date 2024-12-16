@@ -1,0 +1,11 @@
+{% extends 'guest.html' %}
+{% block title %}Rutas De Atención{% endblock %}
+{% block main %}
+    <main class="mt-16 bg-gray-100 flex flex-col overflow-hidden dark:bg-gray-900 h-xl-screen 2xl:h-2xl-screen 3xl:h-3xl-screen">
+        <h1 class="text-center text-verde-uajs text-3xl my-3 flex-shrink-0">RUTA DE ATENCIÓN PSICOLÓGICA</h1>
+        <div class="w-full flex-1 flex justify-center items-center overflow-hidden">
+            <img class="max-w-full max-h-full object-scale-down hidden md:block" src="{{ url_for('static', filename='assets/images/ruta.png') }}">
+            <img class="max-w-full max-h-full object-scale-down block md:hidden" src="{{ url_for('static', filename='assets/images/rutah.png') }}">
+        </div>
+    </main>
+{% endblock %}

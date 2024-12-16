@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %}Error{% endblock %}
+{% block navbar %}
+    <nav class="bg-verde-uajs fixed w-full z-50 top-0 start-0 shadow-lg dark:bg-gray-700">
+      <div class="min-w-screen-sm max-w-screen-3xl flex flex-wrap items-center justify-between mx-auto px-8 py-4">
+        <a href="{{ url_for('views.index') }}" class="flex items-center space-x-3 rtl:space-x-reverse">
+          <div class="flex w-8 h-8 2xl:w-10 2xl:h-10 3xl:w-12 3xl:h-12 text-sm rounded-full bg-logo bg-cover bg-center"></div>
+          <span class="self-center text-2xl 2xl:text-3xl 3xl:text-4xl whitespace-nowrap text-white hover:text-plata transition duration-500">Psicobot</span>
+        </a>
+      </div>
+    </nav>
+{% endblock %}
+{% block main %}
+  <main class="flex flex-1 grid grid-cols-1 md:grid-cols-2 gap-2 h-screen mt-16 2xl:mt-[72px] 3xl:mt-[80px] bg-gray-100 dark:bg-gray-900">
+    <div class="relative bg-uajs bg-cover bg-center hidden md:block"></div>
+    <div class="flex items-center justify-center p-6 bg-uajs bg-cover bg-center md:bg-none">
+      <div class="w-96 2xl:w-[30rem] 3xl:w-[32rem] rounded-lg bg-white border border-gris-perla shadow dark:bg-gray-700 dark:text-white dark:border-gris-marengo">
+        <div class="p-5 text-center">
+          <h3 class="mb-2 tracking-tight text-3xl 2xl:text-4xl 3xl:text-5xl">Psicobot</h3>
+          <p class="2xl:text-lg 3xl:text-2xl">Asistente Psicológico Virtual</p>
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              <ul class=flashes>
+                {% for category, message in messages %}
+                  {% if category == 'fatal error' %}
+                    <div class="flex items-center p-2 mb-4 text-sm 2xl:text-base border border-rojo-blood dark:border-red-50 text-rojo-blood rounded-lg bg-rojo-jun" role="alert">
+                      <svg class="flex-shrink-0 inline w-5 h-5 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z" clip-rule="evenodd"/>
+                      </svg>
+                      <li class="font-medium">{{ message }}</li>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </ul>
+            {% else %}
+              <div class="flex items-center p-2 mb-4 text-sm 2xl:text-base border border-rojo-blood dark:border-red-50 text-rojo-blood rounded-lg bg-rojo-jun" role="alert">
+                <svg class="flex-shrink-0 inline w-5 h-5 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                  <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z" clip-rule="evenodd"/>
+                </svg>
+                <span class="font-medium">Ocurrió un error inesperado. Por favor, inténtalo de nuevo más tarde.</span>
+              </div>
+            {% endif %}
+          {% endwith %}
+          <a href="{{ url_for('views.index') }}" class="flex justify-center w-full 2xl:text-xl mb-1 px-4 py-2 bg-verde-uajs border border-verde-paris rounded-md text-white uppercase tracking-wider hover:bg-verde-paris hover:text-black hover:border-verde-uajs focus:bg-verde-paris focus:text-black focus:outline-none focus:ring-2 focus:ring-verde-paris focus:ring-offset-2 transition ease-in-out duration-500">
+            Regresar al inicio
+          </a>
+          <a href="{{ url_for('panel_admin.PanelDeAdministracion') if session['id_roles'] == 1 else url_for('user.PanelDeUsuario') }}" class="flex justify-center w-full 2xl:text-xl mb-1 px-4 py-2 bg-verde-uajs border border-verde-paris rounded-md text-white uppercase tracking-wider hover:bg-verde-paris hover:text-black hover:border-verde-uajs focus:bg-verde-paris focus:text-black focus:outline-none focus:ring-2 focus:ring-verde-paris focus:ring-offset-2 transition ease-in-out duration-500">
+            Regresar a mi cuenta
+          </a>
+          <a href="{{ url_for('logout.cerrar_sesion') }}" class="flex justify-center w-full 2xl:text-xl mb-1 px-4 py-2 bg-verde-uajs border border-verde-paris rounded-md text-white uppercase tracking-wider hover:bg-verde-paris hover:text-black hover:border-verde-uajs focus:bg-verde-paris focus:text-black focus:outline-none focus:ring-2 focus:ring-verde-paris focus:ring-offset-2 transition ease-in-out duration-500">
+            Cerar sesión
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+{% endblock %}

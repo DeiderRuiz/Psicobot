@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Bree+Serif&display=swap" rel="stylesheet" />
+    <link rel="icon" type="Images/ico" href="{{url_for('static',filename='favicon.ico')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/main.css')}}">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <title>Psicobot - {% block title %}{% endblock %}</title>
+  </head>
+  <body class="font-bree-serif antialiased flex flex-col h-screen bg-gray-100 dark:bg-gray-900" id="app" v-cloak>
+    {% block navbar %}
+    {% endblock %}
+    <!-- Bloque de contenido -->
+    {% block main %}
+    {% endblock %}
+    <script src="{{ url_for('static', filename='js/Vue.js') }}"></script>
+  </body>
+</html>

@@ -1,0 +1,142 @@
+<!-- Vista de los detales de la cita de orientación psicologica -->
+{% extends 'applayout.html' %}
+{% block title %}Solicitudes{% endblock %}
+{% block main %}
+    <div class="pb-6">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="px-6 pt-6">
+                    <ul class=flashes>
+                        {% for category, message in messages %}
+                            {% if category == 'success' %}
+                                <div class="flex items-center p-2 mb-4 text-sm 2xl:text-base border border-green-900 dark:border-green-50 text-verde-musgo rounded-lg bg-verde-paris" role="alert">
+                                    <svg class="flex-shrink-0 inline w-5 h-5 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                        <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm13.707-1.293a1 1 0 0 0-1.414-1.414L11 12.586l-1.793-1.793a1 1 0 0 0-1.414 1.414l2.5 2.5a1 1 0 0 0 1.414 0l4-4Z" clip-rule="evenodd"/>
+                                    </svg>
+                                    <li class="font-medium">
+                                        {{ message }} <a href="{{ url_for('panel_admin.PanelDeAdministracion') if session['id_roles'] == 1 else url_for('user.PanelDeUsuario') }}" class="text-green-900 hover:text-green-700 border-b border-green-800 dark:text-green-100 dark:hover:text-green-300 dark:border-green-200">
+                                            Volver al inicio
+                                        </a>
+                                    </li>
+                                </div>
+                            {% elif category == 'error' %}
+                                <div class="flex items-center p-2 mb-4 text-sm 2xl:text-base border border-rojo-blood dark:border-red-50 text-red-50 rounded-lg bg-rojo-u" role="alert">
+                                    <svg class="flex-shrink-0 inline w-5 h-5 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                        <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v5a1 1 0 1 0 2 0V8Zm-1 7a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12Z" clip-rule="evenodd"/>
+                                    </svg>
+                                    <li class="font-medium">{{ message }}</li>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        {% endwith %}
+        <div class="grid grid-cols-3 gap-2 flex justify-center items-start px-6 mt-6">
+            <div class="col-span-1">
+                <h3 class="text-lg md:text-xl 2xl:text-2xl 3xl:text-3xl">Información del perfil</h3>
+                <p class="text-gray-800 text-sm md:text-base 2xl:text-lg 3xl:text-xl dark:text-plata">Actualiza la información de tu perfil en Psicobot.</p>
+            </div>
+            <div class="col-span-2 block p-3 md:p-6 bg-white border border-gris-perla rounded-lg shadow dark:bg-gray-700 dark:border-gris-marengo">
+                <form action="{{ url_for('profile.perfil', idusers=session['id']) }}" method="post">
+                    {{ update_profile_form.hidden_tag() }}
+                    <div class="mt-2">
+                        {{ update_profile_form.nombres.label(class_='block font-medium text-left text-xs md:text-sm 2xl:text-base 3xl:text-lg') }}
+                        {{ update_profile_form.nombres(class_='appearance-none text-xs md:text-sm 2xl:text-base 3xl:text-lg rounded-lg relative block w-full p-2 bg-gray-100 border border-verde-paris focus:outline-none focus:ring-1 focus:ring-verde-uajs focus:border-verde-uajs focus:bg-gray-200 focus:z-10 shadow-sm dark:bg-gray-500 dark:focus:bg-gris-marengo') }}
+                        {% for error in update_profile_form.nombres.errors %}
+                            <div>
+                                <span class="block font-medium text-xs 2xl:text-sm 3xl:text-base text-left text-red-800 dark:text-red-400">{{ error }}</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="mt-2">
+                        {{ update_profile_form.apellidos.label(class_='block font-medium text-left text-xs md:text-sm 2xl:text-base 3xl:text-lg') }}
+                        {{ update_profile_form.apellidos(class_='appearance-none text-xs md:text-sm 2xl:text-base 3xl:text-lg rounded-lg relative block w-full p-2 bg-gray-100 border border-verde-paris focus:outline-none focus:ring-1 focus:ring-verde-uajs focus:border-verde-uajs focus:bg-gray-200 focus:z-10 shadow-sm dark:bg-gray-500 dark:focus:bg-gris-marengo') }}
+                        {% for error in update_profile_form.apellidos.errors %}
+                            <div>
+                                <span class="block font-medium text-xs 2xl:text-sm 3xl:text-base text-left text-red-800 dark:text-red-400">{{ error }}</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="mt-2">
+                        {{ update_profile_form.email.label(class_='block font-medium text-left text-xs md:text-sm 2xl:text-base 3xl:text-lg') }}
+                        {{ update_profile_form.email(class_='appearance-none text-xs md:text-sm 2xl:text-base 3xl:text-lg rounded-lg relative block w-full p-2 bg-gray-100 border border-verde-paris focus:outline-none focus:ring-1 focus:ring-verde-uajs focus:border-verde-uajs focus:bg-gray-200 focus:z-10 shadow-sm dark:bg-gray-500 dark:focus:bg-gris-marengo') }}
+                        {% for error in update_profile_form.email.errors %}
+                            <div>
+                                <span class="block font-medium text-xs 2xl:text-sm 3xl:text-base text-left text-red-800 dark:text-red-400">{{ error }}</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="mt-4">
+                        {{ update_profile_form.updateProfile(class_='flex justify-center text-xs md:text-sm 2xl:text-base 3xl:text-lg mb-2 p-2 bg-verde-uajs border border-verde-paris rounded-md text-white uppercase tracking-wider hover:bg-verde-paris hover:text-black hover:border-verde-uajs focus:bg-verde-paris focus:text-black focus:outline-none focus:ring-2 focus:ring-verde-paris focus:ring-offset-2 hover:scale-110 ease-in-out delay-150 duration-300') }}
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="grid grid-cols-3 gap-2 flex justify-center items-start px-6 mt-6">
+            <div class="col-span-1">
+                <h3 class="text-lg md:text-xl 2xl:text-2xl 3xl:text-3xl">Actualizar Contraseña</h3>
+                <p class="text-gray-800 text-sm md:text-base 2xl:text-lg 3xl:text-xl dark:text-plata">Actualiza tu contraseña para mantener segura tu cuenta.</p>
+            </div>
+            <div class="col-span-2 block p-3 md:p-6 bg-white border border-gris-perla rounded-lg shadow dark:bg-gray-700 dark:border-gris-marengo">
+                <form action="{{ url_for('profile.perfil', idusers=session['id']) }}" method="post">
+                    {{ change_password_form.hidden_tag() }}
+                    <div class="mt-2">
+                        {{ change_password_form.password.label(class_='block font-medium text-left text-xs md:text-sm 2xl:text-base 3xl:text-lg') }}
+                        {{ change_password_form.password(class_='appearance-none text-xs md:text-sm 2xl:text-base 3xl:text-lg rounded-lg relative block w-full p-2 bg-gray-100 border border-verde-paris focus:outline-none focus:ring-1 focus:ring-verde-uajs focus:border-verde-uajs focus:bg-gray-200 focus:z-10 shadow-sm dark:bg-gray-500 dark:focus:bg-gris-marengo') }}
+                        {% for error in change_password_form.password.errors %}
+                            <div>
+                                <span class="block font-medium text-xs 2xl:text-sm 3xl:text-base text-left text-red-800">{{ error }}</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="mt-2">
+                        {{ change_password_form.confirm_password.label(class_='block font-medium text-left text-xs md:text-sm 2xl:text-base 3xl:text-lg') }}
+                        {{ change_password_form.confirm_password(class_='appearance-none text-xs md:text-sm 2xl:text-base 3xl:text-lg rounded-lg relative block w-full p-2 bg-gray-100 border border-verde-paris focus:outline-none focus:ring-1 focus:ring-verde-uajs focus:border-verde-uajs focus:bg-gray-200 focus:z-10 shadow-sm dark:bg-gray-500 dark:focus:bg-gris-marengo') }}
+                        {% for error in change_password_form.confirm_password.errors %}
+                            <div>
+                                <span class="block font-medium text-xs 2xl:text-sm 3xl:text-base text-left text-red-800 dark:text-red-400">{{ error }}</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="mt-4">
+                        {{ change_password_form.updatePassword(class_='flex justify-center text-xs md:text-sm 2xl:text-base 3xl:text-lg mb-2 p-2 bg-verde-uajs border border-verde-paris rounded-md text-white uppercase tracking-wider hover:bg-verde-paris hover:text-black hover:border-verde-uajs focus:bg-verde-paris focus:text-black focus:outline-none focus:ring-2 focus:ring-verde-paris focus:ring-offset-2 hover:scale-110 ease-in-out delay-150 duration-300') }}
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% if perfil_usuario.id_roles == 2 %}
+            <div class="grid grid-cols-3 gap-2 flex justify-center items-start px-6 mt-6">
+                <div class="col-span-1">
+                    <h3 class="text-lg md:text-xl 2xl:text-2xl 3xl:text-3xl">Borrar Cuenta</h3>
+                    <p class="text-gray-800 text-sm md:text-base 2xl:text-lg 3xl:text-xl dark:text-plata">Puedes borrar tu cuenta si así lo prefieres.</p>
+                </div>
+                <div class="col-span-2 block p-3 md:p-6 bg-white border border-gris-perla rounded-lg shadow dark:bg-gray-700 dark:border-gris-marengo">
+                    <p class="text-xs md:text-base 2xl:text-lg 3xl:text-xl">Por favor, ten en cuenta que borrar tu cuenta en Psicobot es irreversible. Toda tu información personal será eliminada, y los registros de citas permanecerán en el sistema con datos anonimizados para conservar un historial de solicitudes de orientación psicológica.</p>
+                    <div class="mt-4">
+                        <button @click="showModal('delete')" class="flex justify-center text-xs md:text-sm 2xl:text-base 3xl:text-lg mb-2 p-2 bg-red-500 border border-red-800 rounded-md text-white uppercase tracking-widest hover:bg-red-800 focus:bg-red-800 active:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-800 focus:ring-offset-2 hover:scale-110 ease-in-out delay-150 duration-300">Borrar cuenta</button>
+                    </div>
+                </div>
+                <div v-if="ventana === 'delete'" class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 bottom-0 left-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
+                    <div class="relative p-4 w-full max-w-md 2xl:max-w-xl max-h-full">
+                        <div class="relative bg-white border border-gris-perla rounded-lg shadow dark:bg-gray-700 dark:text-white dark:border-gris-marengo">
+                            <div class="p-4 md:p-5 text-center">
+                                <svg class="mx-auto mb-4 text-red-500 w-12 h-12 2xl:w-14 2xl:h-14 3xl:w-16 3xl:h-16" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                                </svg>
+                                <h3 class="mb-5 text-lg 2xl:text-xl 3xl:text-2xl font-normal">¿Estás seguro de que quieres borrar tu cuenta? Esta acción no se puede deshacer.</h3>
+                                <div class="flex items-center justify-center">
+                                    <form action="{{ url_for('profile.perfil', idusers=session['id']) }}" method="post">
+                                        {{ delete_account_form.hidden_tag() }}
+                                        {{ delete_account_form.DeleteAccount(class_='flex justify-center text-xs md:text-sm 2xl:text-base 3xl:text-lg mb-2 ml-2 px-4 py-2 bg-red-500 border border-red-600 rounded-md text-white uppercase tracking-widest hover:bg-red-600 focus:bg-red-600 active:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 hover:scale-110 ease-in-out delay-150 duration-300') }}
+                                    </form>
+                                    <button @click="closeModal()" class="flex justify-center text-xs md:text-sm 2xl:text-base 3xl:text-lg mb-2 ml-2 p-2 bg-verde-uajs border border-verde-paris rounded-md text-white uppercase tracking-wider hover:bg-verde-paris hover:text-black hover:border-verde-uajs focus:bg-verde-paris focus:text-black focus:outline-none focus:ring-2 focus:ring-verde-paris focus:ring-offset-2 hover:scale-110 ease-in-out delay-150 duration-300">No, cancelar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,84 @@
+<!-- Vista de recuperación de contraseña -->
+{% extends 'guest.html' %}
+{% block title %}Recuperar Contraseña{% endblock %}
+{% block content %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="px-6 pt-6">
+                <ul class=flashes>
+                    {% for category, message in messages %}
+                        {% if category == 'success' %}
+                            <div class="flex items-center p-2 mb-4 text-sm 2xl:text-base border border-green-900 dark:border-green-50 text-verde-musgo rounded-lg bg-verde-paris" role="alert">
+                                <svg class="flex-shrink-0 inline w-5 h-5 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                    <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm13.707-1.293a1 1 0 0 0-1.414-1.414L11 12.586l-1.793-1.793a1 1 0 0 0-1.414 1.414l2.5 2.5a1 1 0 0 0 1.414 0l4-4Z" clip-rule="evenodd"/>
+                                </svg>
+                                <li class="font-medium">
+                                    {{ message }}
+                                    </a>
+                                </li>
+                            </div>
+                        {% elif category == 'error' %}
+                            <div class="flex items-center p-2 mb-4 text-sm 2xl:text-base border border-rojo-blood dark:border-red-50 text-red-50 rounded-lg bg-rojo-u" role="alert">
+                                <svg class="flex-shrink-0 inline w-5 h-5 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                    <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v5a1 1 0 1 0 2 0V8Zm-1 7a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12Z" clip-rule="evenodd"/>
+                                </svg>
+                                <li class="font-medium">{{ message }}</li>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    {% endwith %}
+    {% if estado == True %}
+        <hr class="my-2">
+        <p class="text-sm 2xl:text-lg text-left">Tu cuenta ha sido creada pero debe ser verificada. Te enviamos un código de verificación a tu correo electrónico. Por favor, ingresa el código.</p>
+        <form action="{{ url_for('codigo.VerificarCodigo', token=token) }}" method="post">
+            <!-- Mensajes de error -->
+            {% if mensaje %}
+                <div class="flex items-center p-2 mb-4 text-sm 2xl:text-base border border-rojo-blood dark:border-red-50 text-red-50 rounded-lg bg-rojo-u" role="alert">
+                    <svg class="flex-shrink-0 inline w-5 h-5 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v5a1 1 0 1 0 2 0V8Zm-1 7a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12Z" clip-rule="evenodd"/>
+                    </svg>
+                    <span class="font-medium">{{ mensaje }}</span>
+                </div>
+            {% endif %}
+            {{ form.hidden_tag() }}
+            <div class="mt-2">
+                {{ form.codigo.label(class_='block font-medium text-left text-sm 2xl:text-lg') }}
+                {{ form.codigo(class_='text-center text-2xl appearance-none rounded-lg relative block w-full px-3 py-2 bg-gray-100 border border-verde-paris focus:outline-none focus:ring-1 focus:ring-verde-uajs focus:border-verde-uajs focus:bg-gray-50 focus:z-10 shadow-sm dark:bg-gray-500 dark:focus:bg-gris-marengo', autocomplete="off") }}
+                {% for error in form.codigo.errors %}
+                    <div>
+                        <span class="block font-medium text-xs 2xl:text-sm text-left text-rojo-jun dark:text-red-300">{{ error }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="mt-4">
+                {{ form.submit(class_='flex justify-center w-full 2xl:text-xl mb-2 px-4 py-2 bg-verde-uajs border border-verde-paris rounded-md text-white uppercase tracking-wider hover:bg-verde-paris hover:text-black hover:border-verde-uajs focus:bg-verde-paris focus:text-black focus:outline-none focus:ring-2 focus:ring-verde-paris focus:ring-offset-2 transition ease-in-out duration-150') }}
+            </div>
+        </form>
+    {% else %}
+        <hr class="my-2">
+        <p class="text-sm 2xl:text-base 3xl:text-lg text-center">Esta solicitud ha caducado o ha sido alterada</p>
+        <div class="mt-4">
+            <a href="{{ url_for('login.login_view') }}" class="flex justify-center w-full 2xl:text-xl mb-2 px-4 py-2 bg-verde-uajs border border-verde-paris rounded-md text-white uppercase tracking-wider hover:bg-verde-paris hover:text-black hover:border-verde-uajs focus:bg-verde-paris focus:text-black focus:outline-none focus:ring-2 focus:ring-verde-paris focus:ring-offset-2 transition ease-in-out duration-150">
+                Iniciar Sesión
+            </a>
+        </div>
+    {% endif %}
+    <div class="text-left">
+        <form action="{{ url_for('codigo.VerificarCodigo', token=token) }}" method="post">
+            {{ nuevoCodigoForm.hidden_tag() }}
+            <span class="text-sm 2xl:text-lg">¿Tu código ha caducado?
+                {{ nuevoCodigoForm.submit(class_='cursor-pointer text-verde-uajs hover:text-verde-paris dark:text-verde-paris dark:hover:text-gris-perla') }}
+            </span>
+        </form>
+    </div>
+    <div class="text-right">
+        <span class="text-sm 2xl:text-lg">¿Tu cuenta está verificada?
+            <a href="{{ url_for('login.login_view') }}" class="text-verde-uajs dark:text-verde-paris">
+                Inicia sesión
+            </a>
+        </span>
+    </div>
+{% endblock %}

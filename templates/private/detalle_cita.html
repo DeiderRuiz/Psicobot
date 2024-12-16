@@ -1,0 +1,294 @@
+<!-- Vista de los detales de la cita de orientación psicologica -->
+{% extends 'applayout.html' %}
+{% block title %}Solicitudes{% endblock %}
+{% block main %}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-2 h-xl-screen 2xl:h-2xl-screen 3xl:h-3xl-screen">
+        <div class="relative bg-uajs bg-cover bg-center hidden md:block h-full"></div>
+        <div class="relative p-5 overflow-x-auto">
+            <h5 class="mb-2 text-lg md:text-xl 2xl:text-2xl 3xl:text-3xl uppercase text-center">Solicitud de cita de orientación psicológica</h5>
+            <div class="max-w-full bg-white border border-gris-perla shadow dark:bg-gray-700 dark:border-gris-marengo rounded-xl overflow-x-auto">
+                <table class="table-auto w-full text-sm text-left rtl:text-right text-gris-antracita dark:text-plata">
+                    <thead>
+                        <tr class="bg-gris-perla dark:bg-gris-antracita border-b border-gris-antracita dark:border-gris-perla">
+                            <th scope="row" class="text-center text-base 2xl:text-lg 3xl:text-xl font-medium text-black whitespace-nowrap dark:text-white" colspan="2">
+                                <div class="w-full flex items-center justify-between" id="acciones">
+                                    {% if perfil_usuario.id_roles == 1 %}
+                                        <a href="{{ url_for('citas.Solicitudes') }}" id="inicio" :class="{ 'rounded-tr-lg': lastChildId === 'inicio' }" class="w-full flex items-center justify-center rounded-tl-lg p-2 2xl:text-xl 3xl:text-2xl text-gray-700 hover:bg-gris-antracita hover:text-plata dark:text-white transition duration-700 dark:hover:bg-plata dark:hover:text-gris-antracita underline">
+                                            <svg class="w-5 h-5 2xl:w-7 2xl:h-7 3xl:w-9 3xl:h-9 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                              <path fill-rule="evenodd" d="M11.293 3.293a1 1 0 0 1 1.414 0l6 6 2 2a1 1 0 0 1-1.414 1.414L19 12.414V19a2 2 0 0 1-2 2h-3a1 1 0 0 1-1-1v-3h-2v3a1 1 0 0 1-1 1H7a2 2 0 0 1-2-2v-6.586l-.293.293a1 1 0 0 1-1.414-1.414l2-2 6-6Z" clip-rule="evenodd"/>
+                                            </svg>
+                                            Citas
+                                        </a>
+                                        {% if cita.idusers is not none %}
+                                            {% if cita.progreso == 'aceptada' %}
+                                                <button @click="showModal('atendida')" id="atendida" :class="{ 'rounded-tr-lg': lastChildId === 'atendida' }" class="w-full flex items-center justify-center p-2 2xl:text-xl 3xl:text-2xl text-gray-700 hover:bg-gris-antracita hover:text-plata border-l border-gris-antracita dark:border-gris-perla dark:text-white transition duration-700 dark:hover:bg-plata dark:hover:text-gris-antracita underline">
+                                                    <svg class="w-5 h-5 2xl:w-7 2xl:h-7 3xl:w-9 3xl:h-9 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                                        <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm13.707-1.293a1 1 0 0 0-1.414-1.414L11 12.586l-1.793-1.793a1 1 0 0 0-1.414 1.414l2.5 2.5a1 1 0 0 0 1.414 0l4-4Z" clip-rule="evenodd"/>
+                                                    </svg>
+                                                    Atendida
+                                                </button>
+                                            {% endif %}
+                                            {% if cita.progreso == 'pendiente' %}
+                                                <button @click="showModal('cancelar')" id="cancelar" :class="{ 'rounded-tr-lg': lastChildId === 'cancelar' }" class="w-full flex items-center justify-center p-2 2xl:text-xl 3xl:text-2xl text-gray-700 hover:bg-gris-antracita hover:text-plata dark:text-white transition duration-700 border-l border-gris-antracita dark:border-gris-perla dark:hover:bg-plata dark:hover:text-gris-antracita underline">
+                                                    <svg class="w-5 h-5 2xl:w-7 2xl:h-7 3xl:w-9 3xl:h-9 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                                        <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z" clip-rule="evenodd"/>
+                                                    </svg>
+                                                    Cancelar cita
+                                                </button>
+                                                <button @click="showModal('aceptar')" id="aceptar" :class="{ 'rounded-tr-lg': lastChildId === 'aceptar' }" class="w-full flex items-center justify-center p-2 rounded-tr-xl 2xl:text-xl 3xl:text-2xl text-gray-700 hover:bg-gris-antracita hover:text-plata border-l border-gris-antracita dark:border-gris-perla dark:text-white transition duration-700 dark:hover:bg-plata dark:hover:text-gris-antracita underline">
+                                                    <svg class="w-5 h-5 2xl:w-7 2xl:h-7 3xl:w-9 3xl:h-9 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                                        <path fill-rule="evenodd" d="M9 2a1 1 0 0 0-1 1H6a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-2a1 1 0 0 0-1-1H9Zm1 2h4v2h1a1 1 0 1 1 0 2H9a1 1 0 0 1 0-2h1V4Zm5.707 8.707a1 1 0 0 0-1.414-1.414L11 14.586l-1.293-1.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4Z" clip-rule="evenodd"/>
+                                                    </svg>
+                                                    Confirmar cita
+                                                </button>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endif %}
+                                    {% if perfil_usuario.id_roles == 2 %}
+                                        <a href="{{ url_for('gestionar_cita.gestionar_cita_view') }}" class="w-full flex items-center justify-center rounded-tl-lg p-2 2xl:text-xl 3xl:text-2xl text-gray-700 hover:bg-gris-antracita hover:text-plata dark:text-white transition duration-700 dark:hover:bg-plata dark:hover:text-gris-antracita">
+                                            <svg class="w-5 h-5 2xl:w-7 2xl:h-7 3xl:w-9 3xl:h-9 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                              <path fill-rule="evenodd" d="M11.293 3.293a1 1 0 0 1 1.414 0l6 6 2 2a1 1 0 0 1-1.414 1.414L19 12.414V19a2 2 0 0 1-2 2h-3a1 1 0 0 1-1-1v-3h-2v3a1 1 0 0 1-1 1H7a2 2 0 0 1-2-2v-6.586l-.293.293a1 1 0 0 1-1.414-1.414l2-2 6-6Z" clip-rule="evenodd"/>
+                                            </svg>
+                                            Citas
+                                        </a>
+                                        {% if mi_cita.progreso == 'pendiente' %}
+                                            <button @click="showModal('{{ mi_cita['id'] }}')" id="cancelar_mi_cita" :class="{ 'rounded-tr-lg': lastChildId === 'cancelar_mi_cita' }" class="w-full flex items-center justify-center p-2 2xl:text-xl 3xl:text-2xl text-gray-700 hover:bg-gris-antracita hover:text-plata dark:text-white transition duration-700 border-l border-gris-antracita dark:border-gris-perla dark:hover:bg-plata dark:hover:text-gris-antracita underline">
+                                                <svg class="w-5 h-5 2xl:w-7 2xl:h-7 3xl:w-9 3xl:h-9 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                                    <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z" clip-rule="evenodd"/>
+                                                </svg>
+                                                Cancelar Cita
+                                            </button>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="bg-gris-perla dark:bg-gris-antracita border-b border-gris-antracita dark:border-gris-perla">
+                            <th scope="row" class="text-center text-base 2xl:text-lg 3xl:text-xl px-6 py-2 font-medium text-black whitespace-nowrap dark:text-white" colspan="2">
+                                INFORMACIÓN DEL SOLICITANTE
+                            </th>
+                        </tr>
+                        {% if mi_cita.numero_id != "0000000000" and cita.numero_id != "0000000000" %}
+                            <tr class="odd:bg-white odd:dark:bg-gray-700 even:bg-plata even:dark:bg-gris-marengo 2xl:text-lg 3xl:text-xl border-b border-gris-perla dark:border-gris-antracita">
+                                <th scope="row" class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    Número de identificación
+                                </th>
+                                <td class="px-6 py-3 italic">
+                                    {{ (mi_cita if perfil_usuario.id_roles == 2 else cita).numero_id.title() }}
+                                </td>
+                            </tr>
+                        {% endif %}
+                        {% if cita.nombres != "ANÓNIMO" and cita.apellidos != "ANÓNIMO" and mi_cita.nombres != "ANÓNIMO" and mi_cita.apellidos != "ANÓNIMO" %}
+                            <tr class="odd:bg-white odd:dark:bg-gray-700 even:bg-plata even:dark:bg-gris-marengo 2xl:text-lg 3xl:text-xl border-b border-gris-perla dark:border-gris-antracita">
+                                <th scope="row" class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    Nombre completo
+                                </th>
+                                <td class="px-6 py-3 italic">
+                                    {{ (mi_cita if perfil_usuario.id_roles == 2 else cita).apellidos.title() }} {{ (mi_cita if perfil_usuario.id_roles == 2 else cita).nombres.title() }}
+                                </td>
+                            </tr>
+                        {% endif %}
+                        <tr class="odd:bg-white odd:dark:bg-gray-700 even:bg-plata even:dark:bg-gris-marengo 2xl:text-lg 3xl:text-xl border-b border-gris-perla dark:border-gris-antracita">
+                            <th scope="row" class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                Público
+                            </th>
+                            <td class="px-6 py-3 italic">
+                                {{ (mi_cita if perfil_usuario.id_roles == 2 else cita).publico.title() }}
+                            </td>
+                        </tr>
+                        <tr class="odd:bg-white odd:dark:bg-gray-700 even:bg-plata even:dark:bg-gris-marengo 2xl:text-lg 3xl:text-xl border-b border-gris-perla dark:border-gris-antracita">
+                            <th scope="row" class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                Programa
+                            </th>
+                            <td class="px-6 py-3 italic">
+                                {{ (mi_cita if perfil_usuario.id_roles == 2 else cita).programa.title() }}
+                            </td>
+                        </tr>
+                        <tr class="odd:bg-white odd:dark:bg-gray-700 even:bg-plata even:dark:bg-gris-marengo 2xl:text-lg 3xl:text-xl border-b border-gris-antracita dark:border-gris-perla">
+                            <th scope="row" class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                Semestre
+                            </th>
+                            <td class="px-6 py-3 italic">
+                                {% if (mi_cita if perfil_usuario.id_roles == 2 else cita).semestre != '11' %}
+                                    {{ (mi_cita if perfil_usuario.id_roles == 2 else cita).semestre }}
+                                {% else %}
+                                    No aplica
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% if cita.idusers is none and perfil_usuario.id_roles == 1 %}
+                            <tr class="odd:bg-white odd:dark:bg-gray-700 even:bg-plata even:dark:bg-gris-marengo 2xl:text-lg 3xl:text-xl border-b border-gris-antracita dark:border-gris-perla">
+                                <th scope="row" class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    Estado de la cuenta
+                                </th>
+                                <td class="px-6 py-3 italic">
+                                    Borrada
+                                </td>
+                            </tr>
+                        {% elif cita.idusers is not none and perfil_usuario.id_roles == 1 %}
+                            <tr class="odd:bg-white odd:dark:bg-gray-700 even:bg-plata even:dark:bg-gris-marengo 2xl:text-lg 3xl:text-xl border-b border-gris-antracita dark:border-gris-perla">
+                                <th scope="row" class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    Estado de la cuenta
+                                </th>
+                                <td class="px-6 py-3 italic">
+                                    Activa
+                                </td>
+                            </tr>
+                        {% endif %}
+                        {% if mi_cita.cellphone != "0000000000" and cita.cellphone != "0000000000" and cita.email != "anonimo@ejemplo.com" and mi_cita.email != "anonimo@ejemplo.com" %}
+                            <tr class="bg-gris-perla dark:bg-gris-antracita border-b border-gris-antracita dark:border-gris-perla">
+                                <th scope="row" class="text-center text-base 2xl:text-lg 3xl:text-xl px-6 py-2 font-medium text-black whitespace-nowrap dark:text-white" colspan="2">
+                                    CONTACTO
+                                </th>
+                            </tr>
+                            <tr class="odd:bg-white odd:dark:bg-gray-700 even:bg-plata even:dark:bg-gris-marengo 2xl:text-lg 3xl:text-xl border-b border-gris-perla dark:border-gris-antracita">
+                                <th scope="row" class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    Correo Electrónico
+                                </th>
+                                <td class="px-6 py-3 italic">
+                                    {{ (mi_cita if perfil_usuario.id_roles == 2 else cita).email.lower() }}
+                                </td>
+                            </tr>
+                            <tr class="odd:bg-white odd:dark:bg-gray-700 even:bg-plata even:dark:bg-gris-marengo 2xl:text-lg 3xl:text-xl border-b border-gris-antracita dark:border-gris-perla">
+                                <th scope="row" class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    Teléfono
+                                </th>
+                                <td class="px-6 py-3 italic">
+                                    {{ (mi_cita if perfil_usuario.id_roles == 2 else cita).cellphone }}
+                                </td>
+                            </tr>
+                        {% endif %}
+                        <tr class="bg-gris-perla dark:bg-gris-antracita border-b border-gris-antracita dark:border-gris-perla">
+                            <th scope="row" class="text-center text-base 2xl:text-lg 3xl:text-xl px-6 py-2 font-medium text-black whitespace-nowrap dark:text-white" colspan="2">
+                                INFORMACIÓN DE LA CITA
+                            </th>
+                        </tr>
+                        <tr class="odd:bg-white odd:dark:bg-gray-700 even:bg-plata even:dark:bg-gris-marengo 2xl:text-lg 3xl:text-xl border-b border-gris-perla dark:border-gris-antracita">
+                            <th scope="row" class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                Fecha
+                            </th>
+                            <td class="px-6 py-3 italic">
+                                {{ (mi_cita if perfil_usuario.id_roles == 2 else cita).fecha.title() }}
+                            </td>
+                        </tr>
+                        <tr class="odd:bg-white odd:dark:bg-gray-700 even:bg-plata even:dark:bg-gris-marengo 2xl:text-lg 3xl:text-xl border-b border-gris-perla dark:border-gris-antracita">
+                            <th scope="row" class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                Hora
+                            </th>
+                            <td class="px-6 py-3 italic">
+                                {{ (mi_cita if perfil_usuario.id_roles == 2 else cita).hora.upper() }}
+                            </td>
+                        </tr>
+                        <tr class="odd:bg-white odd:dark:bg-gray-700 even:bg-plata even:dark:bg-gris-marengo 2xl:text-lg 3xl:text-xl border-b border-gris-perla dark:border-gris-antracita">
+                            <th scope="row" class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                Estado
+                            </th>
+                            <td class="px-6 py-3 italic">
+                                {{ (mi_cita if perfil_usuario.id_roles == 2 else cita).progreso.capitalize() }}
+                            </td>
+                        </tr>
+                        <tr class="odd:bg-white odd:dark:bg-gray-700 even:bg-plata even:dark:bg-gris-marengo 2xl:text-lg 3xl:text-xl">
+                            <th scope="row" class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                Motivo de consulta
+                            </th>
+                            <td class="px-6 py-3 italic">
+                                {{ (mi_cita if perfil_usuario.id_roles == 2 else cita).asunto.capitalize() }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                {% if perfil_usuario.id_roles == 1 and cita.progreso == 'aceptada' %}
+                    <div v-if="ventana === 'atendida'" class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 bottom-0 left-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
+                        <div class="relative p-4 w-full max-w-lg 2xl:max-w-xl max-h-full">
+                            <div class="relative bg-white border border-gris-perla rounded-lg shadow dark:bg-gray-700 dark:text-white dark:border-gris-marengo">
+                                <div class="p-4 md:p-5 text-center">
+                                    <svg class="mx-auto mb-4 text-verde-uajs dark:text-verde-paris w-12 h-12 2xl:w-14 2xl:h-14 3xl:w-16 3xl:h-16" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                                    </svg>
+                                    <h3 class="mb-5 text-lg 2xl:text-xl 3xl:text-2xl font-normal">¿Estás seguro de que quieres marcar como atendida esta solicitud de cita? Esta acción no se puede deshacer.</h3>
+                                    <div class="flex items-center justify-between">
+                                        <form action="{{ url_for('atender_citas.atender_cita', id=cita['id']) }}" method="post">
+                                            {{ form_atendido.hidden_tag() }}
+                                            <button type="submit" class="flex justify-center text-xs md:text-sm 2xl:text-base 3xl:text-lg mb-2 mr-2 p-2 bg-verde-uajs border border-verde-paris rounded-md text-white uppercase tracking-wider hover:bg-verde-paris hover:text-black hover:border-verde-uajs focus:bg-verde-paris focus:text-black focus:outline-none focus:ring-2 focus:ring-verde-paris focus:ring-offset-2 hover:scale-110 ease-in-out delay-150 duration-300">Sí, Marcar como atendida</button>
+                                        </form>
+                                        <button @click="closeModal()" class="flex justify-center text-xs md:text-sm 2xl:text-base 3xl:text-lg mb-2 ml-2 px-4 py-2 bg-red-500 border border-red-600 rounded-md text-white uppercase tracking-widest hover:bg-red-600 focus:bg-red-600 active:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 hover:scale-110 ease-in-out delay-150 duration-300">No, cancelar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if perfil_usuario.id_roles == 1 and cita.progreso == 'pendiente' %}
+                    <div v-if="ventana === 'cancelar'" class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 bottom-0 left-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
+                        <div class="relative p-4 w-full max-w-lg 2xl:max-w-xl max-h-full">
+                            <div class="relative bg-white border border-gris-perla rounded-lg shadow dark:bg-gray-700 dark:text-white dark:border-gris-marengo">
+                                <div class="p-4 md:p-5 text-center">
+                                    <svg class="mx-auto mb-4 text-red-500 w-12 h-12 2xl:w-14 2xl:h-14 3xl:w-16 3xl:h-16" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                                    </svg>
+                                    <h3 class="mb-5 text-lg 2xl:text-xl 3xl:text-2xl font-normal">¿Estás seguro de que quieres cancelar esta solicitud de cita? Esta acción no se puede deshacer.</h3>
+                                    <div>
+                                        <form action="{{ url_for('cancelar_citas.cancelar_cita', id=cita['id']) }}" method="post">
+                                            {{ form.hidden_tag() }}
+                                            <textarea id="motivo" name="motivo" rows="1" class="resize-none block mb-4 p-2.5 w-full text-sm 2xl:text-base 3xl:text-lg bg-white rounded-lg border border-verde-uajs border-2 focus:outline-none focus:ring-1 focus:ring-verde-paris focus:border-verde-paris focus:bg-gray-200 overflow-hidden dark:bg-gray-700 dark:focus:bg-gris-marengo" placeholder="Escribe el motivo de cancelación"  autocomplete="off"></textarea>
+                                            <div class="flex items-center justify-between">
+                                                <button type="submit" class="flex justify-center text-xs md:text-sm 2xl:text-base 3xl:text-lg mb-2 mr-2 px-4 py-2 bg-red-500 border border-red-600 rounded-md text-white uppercase tracking-widest hover:bg-red-600 focus:bg-red-600 active:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 hover:scale-110 ease-in-out delay-150 duration-300">Sí, canelar cita</button>
+                                                <button @click="closeModal()" class="flex justify-center text-xs md:text-sm 2xl:text-base 3xl:text-lg mb-2 ml-2 p-2 bg-verde-uajs border border-verde-paris rounded-md text-white uppercase tracking-wider hover:bg-verde-paris hover:text-black hover:border-verde-uajs focus:bg-verde-paris focus:text-black focus:outline-none focus:ring-2 focus:ring-verde-paris focus:ring-offset-2 hover:scale-110 ease-in-out delay-150 duration-300">No, cancelar</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-if="ventana === 'aceptar'" class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 bottom-0 left-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
+                        <div class="relative p-4 w-full max-w-lg 2xl:max-w-xl max-h-full">
+                            <div class="relative bg-white border border-gris-perla rounded-lg shadow dark:bg-gray-700 dark:text-white dark:border-gris-marengo">
+                                <div class="p-4 md:p-5 text-center">
+                                    <svg class="mx-auto mb-4 text-verde-uajs dark:text-verde-paris w-12 h-12 2xl:w-14 2xl:h-14 3xl:w-16 3xl:h-16" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                                    </svg>
+                                    <h3 class="mb-5 text-lg 2xl:text-xl 3xl:text-2xl font-normal">Estás a punto de aceptar esta solicitud de cita de orientación psicológica, Si deseas aceptar esta solicitud escribe un mensaje para informar al solicitante</h3>
+                                    <div>
+                                        <form action="{{ url_for('aceptar_citas.aceptar_cita', id=cita['id']) }}" method="post">
+                                            {{ form_aceptar.hidden_tag() }}
+                                            <textarea id="mensaje" name="mensaje" rows="1" class="resize-none block mb-4 p-2.5 w-full text-sm 2xl:text-base 3xl:text-lg bg-white rounded-lg border border-verde-uajs border-2 focus:outline-none focus:ring-1 focus:ring-verde-paris focus:border-verde-paris focus:bg-gray-200 overflow-hidden dark:bg-gray-700 dark:focus:bg-gris-marengo" placeholder="Escribe un mensaje para informar al solicitante"  autocomplete="off"></textarea>
+                                            <div class="flex items-center justify-between">
+                                                <button type="submit" class="flex justify-center text-xs md:text-sm 2xl:text-base 3xl:text-lg mb-2 mr-2 p-2 bg-verde-uajs border border-verde-paris rounded-md text-white uppercase tracking-wider hover:bg-verde-paris hover:text-black hover:border-verde-uajs focus:bg-verde-paris focus:text-black focus:outline-none focus:ring-2 focus:ring-verde-paris focus:ring-offset-2 hover:scale-110 ease-in-out delay-150 duration-300">Enviar</button>
+                                                <button @click="closeModal()" class="flex justify-center text-xs md:text-sm 2xl:text-base 3xl:text-lg mb-2 ml-2 px-4 py-2 bg-red-500 border border-red-600 rounded-md text-white uppercase tracking-widest hover:bg-red-600 focus:bg-red-600 active:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 hover:scale-110 ease-in-out delay-150 duration-300">Cancelar</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if perfil_usuario.id_roles == 2 and mi_cita.progreso == 'pendiente' %}
+                    <div v-if="ventana === '{{ mi_cita['id'] }}'" class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 bottom-0 left-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
+                        <div class="relative p-4 w-full max-w-md 2xl:max-w-xl max-h-full">
+                            <div class="relative bg-white border border-gris-perla rounded-lg shadow dark:bg-gray-700 dark:text-white dark:border-gris-marengo">
+                                <div class="p-4 md:p-5 text-center">
+                                    <svg class="mx-auto mb-4 text-red-500 w-12 h-12 2xl:w-14 2xl:h-14 3xl:w-16 3xl:h-16" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                                    </svg>
+                                    <h3 class="mb-5 text-lg 2xl:text-xl 3xl:text-2xl font-normal">¿Estás seguro de que quieres cancelar esta solicitud de cita? Esta acción no se puede deshacer.</h3>
+                                    <div class="flex items-center justify-center">
+                                        <form action="{{ url_for('cancelar_citas.cancelar_cita', id=mi_cita['id']) }}" method="post">
+                                            {{ form.hidden_tag() }}
+                                            <button type="submit" class="flex justify-center text-xs md:text-sm 2xl:text-base 3xl:text-lg mb-2 ml-2 px-4 py-2 bg-red-500 border border-red-600 rounded-md text-white uppercase tracking-widest hover:bg-red-600 focus:bg-red-600 active:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 hover:scale-110 ease-in-out delay-150 duration-300">Sí, canelar cita</button>
+                                        </form>
+                                        <button @click="closeModal()" class="flex justify-center text-xs md:text-sm 2xl:text-base 3xl:text-lg mb-2 ml-2 p-2 bg-verde-uajs border border-verde-paris rounded-md text-white uppercase tracking-wider hover:bg-verde-paris hover:text-black hover:border-verde-uajs focus:bg-verde-paris focus:text-black focus:outline-none focus:ring-2 focus:ring-verde-paris focus:ring-offset-2 hover:scale-110 ease-in-out delay-150 duration-300">No, cancelar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+{% endblock %}

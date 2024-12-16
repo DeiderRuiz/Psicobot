@@ -1,0 +1,428 @@
+{% extends 'guest.html' %}
+{% block title %}Acerca De{% endblock %}
+{% block main %}
+  <main class="flex flex-1 grid grid-cols-1 md:grid-cols-2 gap-2 h-screen mt-16 bg-gray-100 dark:bg-gray-900 overflow-hidden">
+    <div class="relative bg-uajs bg-cover bg-center hidden md:block"></div>
+    <div class="flex items-start justify-center p-6 overflow-auto">
+      <div class="w-full">
+        <div class="px-5">
+          <h1 class="text-2xl 2xl:text-4xl 3xl:text-5xl text-center text-verde-uajs dark:text-verde-paris mb-2">Acerca De Psicobot</h1>
+          <div>
+            <h2>
+              <button @click="showModal('1')" type="button" class="flex items-center justify-between w-full rounded-t-xl p-4 font-medium rtl:text-right bg-white text-gris-antracita border border-b-0 border-gris-perla focus:ring-2 focus:ring-plata transition duration-500 dark:bg-gray-700 dark:focus:ring-gris-antracita dark:border-gris-marengo dark:text-plata hover:bg-gris-antracita hover:text-gris-perla dark:hover:bg-plata dark:hover:text-gris-antracita gap-3">
+                <span class="flex items-center text-sm md:text-base 2xl:text-xl 3xl:text-2xl">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 w-6 h-6 2xl:w-7 2xl:h-7 3xl:w-8 3xl:h-8" viewBox="0 0 256 256">
+                    <path fill="currentColor" d="M244.1 122.63a13.56 13.56 0 0 0-8.3-6.4a72.6 72.6 0 0 0-24.17-2c4.67-20.63 1.62-36.91-1.45-46.4a14.16 14.16 0 0 0-16.48-9.53a84.2 84.2 0 0 0-29.76 13.11a92.6 92.6 0 0 0-27.52-34.6a14 14 0 0 0-16.85 0a92.7 92.7 0 0 0-27.51 34.6A84.2 84.2 0 0 0 62.29 58.3a14.15 14.15 0 0 0-16.47 9.54c-3.07 9.49-6.12 25.77-1.45 46.4a72.6 72.6 0 0 0-24.17 2a13.56 13.56 0 0 0-8.3 6.4a14 14 0 0 0-1.4 10.74C13.81 145.66 24 169 54.92 187.51S113.29 206 128 206s42.12 0 73.06-18.49s41.11-41.85 44.42-54.14a14 14 0 0 0-1.38-10.74M168.48 82.9A73.1 73.1 0 0 1 196.22 70a2.2 2.2 0 0 1 2.54 1.5c3.94 12.22 7.81 37.5-10.59 69.5a129.8 129.8 0 0 1-28 33.37C167.85 161 174 142.93 174 119.17a116.1 116.1 0 0 0-5.52-36.27M57.24 71.53A2.2 2.2 0 0 1 59.78 70a73.1 73.1 0 0 1 27.74 12.9A116.1 116.1 0 0 0 82 119.17c0 23.76 6.15 41.85 13.81 55.17a129.6 129.6 0 0 1-28-33.37C49.43 109 53.3 83.72 57.24 71.53m3.84 105.67c-27.3-16.31-36.15-36.42-39-47a2.08 2.08 0 0 1 .21-1.61a1.7 1.7 0 0 1 1-.8A62.2 62.2 0 0 1 48 126.72A126 126 0 0 0 57.43 147a141 141 0 0 0 41 44.72a114.8 114.8 0 0 1-37.35-14.52M128 192.86c-8.68-6.2-34-28.2-34-73.69c0-43.36 22.94-65.34 32.8-72.78a2 2 0 0 1 2.4 0c9.86 7.44 32.8 29.42 32.8 72.78c0 45.77-25.19 67.5-34 73.69m105.9-62.62c-2.85 10.54-11.7 30.65-39 47a114.8 114.8 0 0 1-37.38 14.47a141 141 0 0 0 41-44.72a126 126 0 0 0 9.48-20.27a62.2 62.2 0 0 1 24.73 1.11a1.7 1.7 0 0 1 1 .8a2.08 2.08 0 0 1 .19 1.61Z"/>
+                  </svg>
+                  Importancia de la salud mental
+                </span>
+                <svg :class="ventana === '1' ? 'rotate-180 duration-300' : 'rotate-0 duration-300'" data-accordion-icon class="w-3 h-3 2xl:w-4 2xl:h-4 3xl:w-5 3xl:h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+                </svg>
+              </button>
+            </h2>
+            <div v-if="ventana === '1'">
+              <div class="text-sm md:text-base 2xl:text-lg 3xl:text-xl p-5 border border-b-0 border-gris-perla bg-plata dark:border-gris-marengo dark:bg-gris-antracita">
+                <p class="text-black dark:text-white mb-1">
+                  La salud mental juega un rol esencial en la vida de los estudiantes universitarios, impactando tanto su bienestar personal como su rendimiento académico.
+                </p>
+                <p class="text-black dark:text-white mb-1">
+                  El entorno académico puede presentar desafíos emocionales significativos, y sin el apoyo adecuado, trastornos como la ansiedad, la depresión y el estrés pueden afectar profundamente la calidad de vida de los estudiantes.
+                </p>
+                <p class="text-black dark:text-white mb-1">
+                  Es por ello que resulta crucial contar con herramientas que les brinden el acompañamiento necesario para enfrentar estos desafíos.
+                </p>
+              </div>
+            </div>
+            <h2>
+              <button @click="showModal('2')" type="button" class="flex items-center justify-between w-full p-4 font-medium rtl:text-right bg-white text-gris-antracita border border-b-0 border-gris-perla focus:ring-2 focus:ring-plata transition duration-500 dark:bg-gray-700 dark:focus:ring-gris-antracita dark:border-gris-marengo dark:text-plata hover:bg-gris-antracita hover:text-gris-perla dark:hover:bg-plata dark:hover:text-gris-antracita gap-3">
+                <span class="flex items-center text-sm md:text-base 2xl:text-xl 3xl:text-2xl">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 w-6 h-6 2xl:w-7 2xl:h-7 3xl:w-8 3xl:h-8" viewBox="0 0 14 14">
+                    <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M13 2H1a.5.5 0 0 0-.5.5v8a.5.5 0 0 0 .5.5h12a.5.5 0 0 0 .5-.5v-8A.5.5 0 0 0 13 2m-7 9l-1 2.5M8 11l1 2.5m-5 0h6"/>
+                      <path d="m4.5 5.25l-1.75 1.5L4.25 8m5.5-2.5l1.5 1.25l-1.75 1.5m-3.25.5l1.5-4.5"/>
+                    </g>
+                  </svg>
+                  ¿Por qué se creó Psicobot?
+                </span>
+                <svg :class="ventana === '2' ? 'rotate-180 duration-300' : 'rotate-0 duration-300'" data-accordion-icon class="w-3 h-3 2xl:w-4 2xl:h-4 3xl:w-5 3xl:h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+                </svg>
+              </button>
+            </h2>
+            <div v-if="ventana === '2'">
+              <div class="text-sm md:text-base 2xl:text-lg 3xl:text-xl p-5 border border-b-0 border-gris-perla bg-plata dark:border-gris-marengo dark:bg-gris-antracita">
+                <p class="text-black dark:text-white mb-1">
+                  Psicobot nace como una herramienta complementaria al servicio de orientación psicológica que la Corporación Universitaria Antonio José de Sucre ofrece a través de la coordinación de desarrollo humano.
+                </p>
+                <p class="text-black dark:text-white mb-1">
+                  Con Psicobot, buscamos facilitar el acceso a recursos de apoyo emocional y contribuir al bienestar integral de los estudiantes, brindándoles un espacio para gestionar sus emociones y orientarlos en momentos de dificultad.
+                </p>
+              </div>
+            </div>
+            <h2>
+              <button @click="showModal('3')" type="button" class="flex items-center justify-between w-full p-4 font-medium rtl:text-right bg-white text-gris-antracita border border-b-0 border-gris-perla focus:ring-2 focus:ring-plata transition duration-500 dark:bg-gray-700 dark:focus:ring-gris-antracita dark:border-gris-marengo dark:text-plata hover:bg-gris-antracita hover:text-gris-perla dark:hover:bg-plata dark:hover:text-gris-antracita gap-3">
+                <span class="flex items-center text-sm md:text-base 2xl:text-xl 3xl:text-2xl">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 w-6 h-6 2xl:w-7 2xl:h-7 3xl:w-8 3xl:h-8" viewBox="0 0 32 32">
+                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m11.5 16l3.5 3.5l6-6m8 2.5a13 13 0 1 1-26 0a13 13 0 0 1 26 0"/>
+                  </svg>
+                  ¿Que puedes hacer con Psicobot?
+                </span>
+                <svg :class="ventana === '3' ? 'rotate-180 duration-300' : 'rotate-0 duration-300'" data-accordion-icon class="w-3 h-3 2xl:w-4 2xl:h-4 3xl:w-5 3xl:h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+                </svg>
+              </button>
+            </h2>
+            <div v-if="ventana === '3'">
+              <div class="text-sm md:text-base 2xl:text-lg 3xl:text-xl p-5 border border-b-0 border-gris-perla bg-plata dark:border-gris-marengo dark:bg-gris-antracita">
+                <p class="text-black dark:text-white mb-1">
+                  Psicobot está diseñada hacer para hacer más accesible el apoyo emocional y psicológico a los estudiantes de la Universidad Antonio José de Sucre. Solo debes registrarte y Entre sus funciones, encontrarás:
+                </p>
+                <ul class="ps-5 text-gris-antracita list-disc dark:text-plata">
+                  <li>
+                    <span class="text-black dark:text-white">SOLICITUD DE CITAS DE ORIENTACIÓN PSICOLÓGICA: </span>
+                    A través de Psicobot, puedes agendar fácilmente una cita con el profesional de la salud del área de Bienestar Institucional, seleccionando el horario que mejor se ajuste a tus necesidades.
+                  </li>
+                  <li><span class="text-black dark:text-white">CHATBOT PARA ORIENTACIÓN PSICOLÓGICA: </span>Si el servicio de orientación psicológica no se encuentra disponible, o no te sientes listo para hablar de tus problemas, el chatbot de Psicobot, disponible las 24 horas, está entrenado para ofrecer apoyo en situaciones de ansiedad, estrés y depresión. A través de una conversación amigable y confidencial, el chatbot puede ayudarte a reflexionar sobre tus emociones, proporcionarte estrategias de afrontamiento y orientarte cuando sea necesario.</li>
+                </ul>
+              </div>
+            </div>
+            <h2>
+              <button @click="showModal('4')" type="button" class="flex items-center justify-between w-full p-4 font-medium rtl:text-right bg-white text-gris-antracita border border-b-0 border-gris-perla focus:ring-2 focus:ring-plata transition duration-500 dark:bg-gray-700 dark:focus:ring-gris-antracita dark:border-gris-marengo dark:text-plata hover:bg-gris-antracita hover:text-gris-perla dark:hover:bg-plata dark:hover:text-gris-antracita gap-3">
+                <span class="flex items-center text-sm md:text-base 2xl:text-xl 3xl:text-2xl">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 w-6 h-6 2xl:w-7 2xl:h-7 3xl:w-8 3xl:h-8" viewBox="0 0 256 256">
+                    <path fill="currentColor" d="M230.33 141.06a24.34 24.34 0 0 0-18.61-4.77C230.5 117.33 240 98.48 240 80c0-26.47-21.29-48-47.46-48A47.58 47.58 0 0 0 156 48.75A47.58 47.58 0 0 0 119.46 32C93.29 32 72 53.53 72 80c0 11 3.24 21.69 10.06 33a31.87 31.87 0 0 0-14.75 8.4L44.69 144H16a16 16 0 0 0-16 16v40a16 16 0 0 0 16 16h104a8 8 0 0 0 1.94-.24l64-16a7 7 0 0 0 1.19-.4L226 182.82l.44-.2a24.6 24.6 0 0 0 3.93-41.56ZM119.46 48a31.15 31.15 0 0 1 29.14 19a8 8 0 0 0 14.8 0a31.15 31.15 0 0 1 29.14-19C209.59 48 224 62.65 224 80c0 19.51-15.79 41.58-45.66 63.9l-11.09 2.55A28 28 0 0 0 140 112h-39.32C92.05 100.36 88 90.12 88 80c0-17.35 14.41-32 31.46-32M16 160h24v40H16Zm203.43 8.21l-38 16.18L119 200H56v-44.69l22.63-22.62A15.86 15.86 0 0 1 89.94 128H140a12 12 0 0 1 0 24h-28a8 8 0 0 0 0 16h32a8.3 8.3 0 0 0 1.79-.2l67-15.41l.31-.08a8.6 8.6 0 0 1 6.3 15.9Z"/>
+                  </svg>
+                  Servicio de orientación psicológica
+                </span>
+                <svg :class="ventana === '4' ? 'rotate-180 duration-300' : 'rotate-0 duration-300'" data-accordion-icon class="w-3 h-3 2xl:w-4 2xl:h-4 3xl:w-5 3xl:h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+                </svg>
+              </button>
+            </h2>
+            <div v-if="ventana === '4'">
+              <div class="text-sm md:text-base 2xl:text-lg 3xl:text-xl p-5 border border-b-0 border-gris-perla bg-plata dark:border-gris-marengo dark:bg-gris-antracita">
+                <p class="text-black dark:text-white mb-1">
+                  El servicio de orientación psicológica, ofrecido a través de la coordinación de desarrollo humano, está diseñado para potenciar el desarrollo integral de los estudiantes y egresados de la Corporación Universitaria Antonio José de Sucre. Este servicio proporciona un espacio individualizado donde los usuarios pueden acceder a apoyo emocional a través de llamadas telefónicas, videoconferencias o encuentros presenciales.
+                </p>
+                <p class="text-black dark:text-white mb-1">
+                  A través de la Psicobot, los estudiantes pueden solicitar una cita de orientación psicológica, la cual será recibida directamente por el profesional encargado. Posteriormente, el profesional agendará la cita en Google Calendar para su confirmación.
+                </p>
+              </div>
+            </div>
+            <h2>
+              <button @click="showModal('5')" type="button" class="flex items-center justify-between w-full p-4 font-medium rtl:text-right bg-white text-gris-antracita border border-b-0 border-gris-perla focus:ring-2 focus:ring-plata transition duration-500 dark:bg-gray-700 dark:focus:ring-gris-antracita dark:border-gris-marengo dark:text-plata hover:bg-gris-antracita hover:text-gris-perla dark:hover:bg-plata dark:hover:text-gris-antracita gap-3">
+                <span class="flex items-center text-sm md:text-base 2xl:text-xl 3xl:text-2xl">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 w-6 h-6 2xl:w-7 2xl:h-7 3xl:w-8 3xl:h-8" width="1em" height="1em" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M14 15.036c0 1.235 1.485 2.543 2.52 3.305c.435.32.652.48.98.48s.545-.16.98-.48c1.035-.762 2.52-2.07 2.52-3.305c0-2.008-1.925-2.757-3.5-1.206c-1.575-1.551-3.5-.802-3.5 1.206"/>
+                    <path fill="currentColor" fill-rule="evenodd" d="M2.25 6A.75.75 0 0 1 3 5.25h18a.75.75 0 0 1 0 1.5H3A.75.75 0 0 1 2.25 6m0 4A.75.75 0 0 1 3 9.25h18a.75.75 0 0 1 0 1.5H3a.75.75 0 0 1-.75-.75m0 4a.75.75 0 0 1 .75-.75h7a.75.75 0 0 1 0 1.5H3a.75.75 0 0 1-.75-.75m0 4a.75.75 0 0 1 .75-.75h7a.75.75 0 0 1 0 1.5H3a.75.75 0 0 1-.75-.75" clip-rule="evenodd"/>
+                  </svg>
+                  Gestión de citas de orientación psicológica
+                </span>
+                <svg :class="ventana === '5' ? 'rotate-180 duration-300' : 'rotate-0 duration-300'" data-accordion-icon class="w-3 h-3 2xl:w-4 2xl:h-4 3xl:w-5 3xl:h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+                </svg>
+              </button>
+            </h2>
+            <div v-if="ventana === '5'">
+              <div class="text-sm md:text-base 2xl:text-lg 3xl:text-xl p-5 border border-b-0 border-gris-perla bg-plata dark:border-gris-marengo dark:bg-gris-antracita">
+                <p class="text-black dark:text-white mb-1">
+                  En tu cuenta de Psicobot tienes la posibilidad de ver un historial de todas las solicitudes de orientación psicológica que has hecho. Además, puedes cancelar una cita pendiente en caso de que no puedas asistir.
+                </p>
+                <p class="text-black dark:text-white mb-1">
+                  Este historial muestra toda la información sobre las citas solicitadas por ti, como la fecha, hora, asunto de la cita etc. Además el estado actual de la misma.
+                </p>
+              </div>
+            </div>
+            <h2>
+              <button @click="showModal('6')" type="button" class="flex items-center justify-between w-full p-4 font-medium rtl:text-right bg-white text-gris-antracita border border-b-0 border-gris-perla focus:ring-2 focus:ring-plata transition duration-500 dark:bg-gray-700 dark:focus:ring-gris-antracita dark:border-gris-marengo dark:text-plata hover:bg-gris-antracita hover:text-gris-perla dark:hover:bg-plata dark:hover:text-gris-antracita gap-3">
+                <span class="flex items-center text-sm md:text-base 2xl:text-xl 3xl:text-2xl">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 w-6 h-6 2xl:w-7 2xl:h-7 3xl:w-8 3xl:h-8" viewBox="0 0 24 24">
+                    <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                      <path d="M18 4a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3h-5l-5 3v-3H6a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3zM9.5 9h.01m4.99 0h.01"/>
+                      <path d="M9.5 13a3.5 3.5 0 0 0 5 0"/>
+                    </g>
+                  </svg>
+                  Chatbot
+                </span>
+                <svg :class="ventana === '6' ? 'rotate-180 duration-300' : 'rotate-0 duration-300'" data-accordion-icon class="w-3 h-3 2xl:w-4 2xl:h-4 3xl:w-5 3xl:h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+                </svg>
+              </button>
+            </h2>
+            <div v-if="ventana === '6'">
+              <div class="text-sm md:text-base 2xl:text-lg 3xl:text-xl p-5 border border-b-0 border-gris-perla bg-plata dark:border-gris-marengo dark:bg-gris-antracita">
+                <p class="text-black dark:text-white mb-1">
+                  El chatbot de Psicobot es la herramienta principal de nuestra aplicación, diseñada para complementar el servicio de orientación psicológica proporcionado por la coordinación de desarrollo humano de la Corporación Universitaria Antonio José de Sucre. Su objetivo es ofrecer a los estudiantes y egresados un espacio seguro donde puedan expresar sus preocupaciones cuando no tienen acceso inmediato al servicio de orientación psicológica de la institución o si prefieren no hablar directamente con alguien en ese momento.
+                </p>
+                <p class="text-black dark:text-white mb-1">
+                  Es importante destacar que el chatbot <span class="text-black dark:text-white font-semibold">NO</span> está destinado a reemplazar el diagnóstico o tratamiento de un profesional de la salud mental. Aunque está entrenado para identificar y ofrecer estrategias de afrontamiento en situaciones relacionadas con la ansiedad, el estrés y la depresión, tiene sus limitaciones. Su función principal es servir como un recurso adicional de apoyo emocional.
+                </p>
+                <p class="text-black dark:text-white mb-1">
+                  El chatbot puede sugerir estrategias para manejar los problemas emocionales mencionados. Sin embargo, si considera que la situación es más grave o requiere una intervención profesional, te recomendará acudir al servicio de orientación psicológica. Siempre es recomendable acudir a un profesional de la salud para un diagnóstico más preciso. Además, es crucial tener en cuenta que el chatbot no está diseñado para abordar problemas de salud física ni para ayudar con actividades académicas.
+                </p>
+                <p class="text-black dark:text-white mb-1">
+                  Respecto a la privacidad, todas las conversaciones con el chatbot se guardan temporalmente durante la sesión activa. Una vez que cierres la sesión, la conversación se eliminará por completo, garantizando la confidencialidad de tus interacciones.
+                </p>
+              </div>
+            </div>
+            <h2>
+              <button @click="showModal('7')" type="button" class="flex items-center justify-between w-full p-4 font-medium rtl:text-right bg-white text-gris-antracita border border-b-0 border-gris-perla focus:ring-2 focus:ring-plata transition duration-500 dark:bg-gray-700 dark:focus:ring-gris-antracita dark:border-gris-marengo dark:text-plata hover:bg-gris-antracita hover:text-gris-perla dark:hover:bg-plata dark:hover:text-gris-antracita gap-3">
+                <span class="flex items-center text-sm md:text-base 2xl:text-xl 3xl:text-2xl">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 w-6 h-6 2xl:w-7 2xl:h-7 3xl:w-8 3xl:h-8" viewBox="0 0 48 48">
+                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M15 7C8.925 7 4 11.925 4 18c0 11 13 21 20 23.326C31 39 44 29 44 18c0-6.075-4.925-11-11-11c-3.72 0-7.01 1.847-9 4.674A10.99 10.99 0 0 0 15 7m3 17h12m-6-6v12"/>
+                  </svg>
+                  Appyudame
+                </span>
+                <svg :class="ventana === '7' ? 'rotate-180 duration-300' : 'rotate-0 duration-300'" data-accordion-icon class="w-3 h-3 2xl:w-4 2xl:h-4 3xl:w-5 3xl:h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+                </svg>
+              </button>
+            </h2>
+            <div v-if="ventana === '7'">
+              <div class="text-sm md:text-base 2xl:text-lg 3xl:text-xl p-5 border border-b-0 border-gris-perla bg-plata dark:border-gris-marengo dark:bg-gris-antracita">
+                <p class="text-black dark:text-white mb-1">
+                  Appyudame es una herramienta externa a la Universidad Antonio José de Sucre, diseñada para ayudarte a conocer tu estado emocional a través de un proceso guiado por inteligencia artificial. Creada por expertos en análisis psicológico, la plataforma te ofrece la oportunidad de explorar tus emociones y bienestar personal mediante la realización de cinco tests psicológicos.
+                </p>
+                <p class="text-black dark:text-white mb-1">
+                  A través de estos tests y un análisis detallado de tus respuestas, recibirás un pre-diagnóstico emocional, junto con recomendaciones personalizadas y recursos adicionales, como videos de psicólogos profesionales. Aunque los resultados de la aplicación no sustituyen el diagnóstico de un profesional de la salud, Appyudame puede ser un primer paso valioso hacia un mayor autoconocimiento y bienestar emocional.
+                </p>
+              </div>
+            </div>
+            <h2>
+              <button @click="showModal('8')" type="button" class="flex items-center justify-between w-full p-4 font-medium rtl:text-right bg-white text-gris-antracita border border-b-0 border-gris-perla focus:ring-2 focus:ring-plata transition duration-500 dark:bg-gray-700 dark:focus:ring-gris-antracita dark:border-gris-marengo dark:text-plata hover:bg-gris-antracita hover:text-gris-perla dark:hover:bg-plata dark:hover:text-gris-antracita gap-3">
+                <span class="flex items-center text-sm md:text-base 2xl:text-xl 3xl:text-2xl">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 w-6 h-6 2xl:w-7 2xl:h-7 3xl:w-8 3xl:h-8" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M16 12.2c0 1.51-1.36 2.74-3.42 4.61l-.58.53l-.58-.53C9.36 14.94 8 13.71 8 12.2c0-1.23.97-2.2 2.2-2.2c.7 0 1.36.32 1.8.83c.44-.51 1.1-.83 1.8-.83c1.23 0 2.2.97 2.2 2.2M21 5v14c0 1.11-.89 2-2 2H5a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2h1V1h2v2h8V1h2v2h1a2 2 0 0 1 2 2M5 5v2h14V5zm14 14V9H5v10z"/>
+                  </svg>
+                  Horario de atención
+                </span>
+                <svg :class="ventana === '8' ? 'rotate-180 duration-300' : 'rotate-0 duration-300'" data-accordion-icon class="w-3 h-3 2xl:w-4 2xl:h-4 3xl:w-5 3xl:h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+                </svg>
+              </button>
+            </h2>
+            <div v-if="ventana === '8'">
+              <div class="text-sm md:text-base 2xl:text-lg 3xl:text-xl p-5 border border-b-0 border-gris-perla bg-plata dark:border-gris-marengo dark:bg-gris-antracita">
+                <p class="text-black dark:text-white mb-1">
+                  Los horarios del servicio de orientación psicológica dependen de la disponibilidad del profesional y pueden variar cada semestre. Al solicitar una cita, el usuario debe elegir una fecha y hora dentro de los horarios disponibles, asegurándose de que coincidan con el turno en el que el servicio está activo.
+                </p>
+                <p class="text-black dark:text-white mb-1">
+                  Además, es posible que el profesional cambie la hora de la cita en caso de ser necesario para sí. Si esto ocurre, se notificará al usuario sobre el cambio.
+                </p>
+              </div>
+            </div>
+            <h2>
+              <button @click="showModal('9')" type="button" class="flex items-center justify-between w-full p-4 font-medium rtl:text-right bg-white text-gris-antracita border border-b-0 border-gris-perla focus:ring-2 focus:ring-plata transition duration-500 dark:bg-gray-700 dark:focus:ring-gris-antracita dark:border-gris-marengo dark:text-plata hover:bg-gris-antracita hover:text-gris-perla dark:hover:bg-plata dark:hover:text-gris-antracita gap-3">
+                <span class="flex items-center text-sm md:text-base 2xl:text-xl 3xl:text-2xl">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 w-6 h-6 2xl:w-7 2xl:h-7 3xl:w-8 3xl:h-8" viewBox="0 0 24 24">
+                    <g fill="none" fill-rule="evenodd">
+                      <path d="m12.594 23.258l-.012.002l-.071.035l-.02.004l-.014-.004l-.071-.036q-.016-.004-.024.006l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.016-.018m.264-.113l-.014.002l-.184.093l-.01.01l-.003.011l.018.43l.005.012l.008.008l.201.092q.019.005.029-.008l.004-.014l-.034-.614q-.005-.019-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.003-.011l.018-.43l-.003-.012l-.01-.01z"/>
+                      <path fill="currentColor" d="M11 2a5 5 0 1 0 0 10a5 5 0 0 0 0-10M8 7a3 3 0 1 1 6 0a3 3 0 0 1-6 0M4 18.5c0-.18.09-.489.413-.899c.316-.4.804-.828 1.451-1.222C7.157 15.589 8.977 15 11 15q.563 0 1.105.059a1 1 0 1 0 .211-1.99A13 13 0 0 0 11 13c-2.395 0-4.575.694-6.178 1.672c-.8.488-1.484 1.064-1.978 1.69C2.358 16.976 2 17.713 2 18.5c0 .845.411 1.511 1.003 1.986c.56.45 1.299.748 2.084.956C6.665 21.859 8.771 22 11 22l.685-.005a1 1 0 1 0-.027-2L11 20c-2.19 0-4.083-.143-5.4-.492c-.663-.175-1.096-.382-1.345-.582C4.037 18.751 4 18.622 4 18.5M18 14a1 1 0 0 1 1 1v2h2a1 1 0 1 1 0 2h-2v2a1 1 0 1 1-2 0v-2h-2a1 1 0 1 1 0-2h2v-2a1 1 0 0 1 1-1"/>
+                    </g>
+                  </svg>
+                  Registro e inicio de sesión
+                </span>
+                <svg :class="ventana === '9' ? 'rotate-180 duration-300' : 'rotate-0 duration-300'" data-accordion-icon class="w-3 h-3 2xl:w-4 2xl:h-4 3xl:w-5 3xl:h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+                </svg>
+              </button>
+            </h2>
+            <div v-if="ventana === '9'">
+              <div class="text-sm md:text-base 2xl:text-lg 3xl:text-xl p-5 border border-b-0 border-gris-perla bg-plata dark:border-gris-marengo dark:bg-gris-antracita">
+                <p class="text-black dark:text-white mb-1">
+                  En Psicobot, el registro está disponible exclusivamente para aquellos que forman parte de la Corporación Universitaria Antonio José de Sucre, eso incluye estudiantes, egresados y docentes, entre otros. Para unirte, solo necesitas proporcionar tu nombre tu correo institucional y establecer una contraseña.
+                </p>
+                <p class="text-black dark:text-white mb-1">
+                  NOTA: La cuenta debe ser verificada con un código que es enviado al correo electrónico
+                </p>
+                <p class="text-black dark:text-white mb-1">
+                  Para acceder a tu cuenta, simplemente ingresa tu correo institucional junto con la contraseña que elegiste. De esta manera, podrás disfrutar de todas las funcionalidades que Psicobot tiene para ofrecerte.
+                </p>
+              </div>
+            </div>
+            <h2>
+              <button @click="showModal('10')" type="button" class="flex items-center justify-between w-full p-4 font-medium rtl:text-right bg-white text-gris-antracita border border-b-0 border-gris-perla focus:ring-2 focus:ring-plata transition duration-500 dark:bg-gray-700 dark:focus:ring-gris-antracita dark:border-gris-marengo dark:text-plata hover:bg-gris-antracita hover:text-gris-perla dark:hover:bg-plata dark:hover:text-gris-antracita gap-3">
+                <span class="flex items-center text-sm md:text-base 2xl:text-xl 3xl:text-2xl">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 w-6 h-6 2xl:w-7 2xl:h-7 3xl:w-8 3xl:h-8" width="1em" height="1em" viewBox="0 0 24 24">
+                    <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
+                      <path d="M9.713 3.64c.581-.495.872-.743 1.176-.888a2.58 2.58 0 0 1 2.222 0c.304.145.595.393 1.176.888c.599.51 1.207.768 2.007.831c.761.061 1.142.092 1.46.204c.734.26 1.312.837 1.571 1.572c.112.317.143.698.204 1.46c.063.8.32 1.407.83 2.006c.496.581.744.872.889 1.176c.336.703.336 1.52 0 2.222c-.145.304-.393.595-.888 1.176a3.3 3.3 0 0 0-.831 2.007c-.061.761-.092 1.142-.204 1.46a2.58 2.58 0 0 1-1.572 1.571c-.317.112-.698.143-1.46.204c-.8.063-1.407.32-2.006.83c-.581.496-.872.744-1.176.889a2.58 2.58 0 0 1-2.222 0c-.304-.145-.595-.393-1.176-.888a3.3 3.3 0 0 0-2.007-.831c-.761-.061-1.142-.092-1.46-.204a2.58 2.58 0 0 1-1.571-1.572c-.112-.317-.143-.698-.204-1.46a3.3 3.3 0 0 0-.83-2.006c-.496-.581-.744-.872-.89-1.176a2.58 2.58 0 0 1 .001-2.222c.145-.304.393-.595.888-1.176c.52-.611.769-1.223.831-2.007c.061-.761.092-1.142.204-1.46a2.58 2.58 0 0 1 1.572-1.571c.317-.112.698-.143 1.46-.204a3.3 3.3 0 0 0 2.006-.83"/>
+                      <path d="m8.667 12.633l1.505 1.721a1 1 0 0 0 1.564-.073L15.333 9.3"/>
+                    </g>
+                  </svg>
+                  Verificación de cuenta
+                </span>
+                <svg :class="ventana === '10' ? 'rotate-180 duration-300' : 'rotate-0 duration-300'" data-accordion-icon class="w-3 h-3 2xl:w-4 2xl:h-4 3xl:w-5 3xl:h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+                </svg>
+              </button>
+            </h2>
+            <div v-if="ventana === '10'">
+              <div class="text-sm md:text-base 2xl:text-lg 3xl:text-xl p-5 border border-b-0 border-gris-perla bg-plata dark:border-gris-marengo dark:bg-gris-antracita">
+                <p class="text-black dark:text-white mb-1">
+                  Cuando te registras en Psicobot, te enviamos un código de 6 dígitos al correo con el que te registraste. Esto se hace por seguridad de la aplicación, con el propósito de confirmar la identidad del usuario.
+                </p>
+                <p class="text-black dark:text-white mb-1">
+                  El código de verificación caduca una hora después de registrarse. Si el código vence, puedes solicitar uno nuevo.
+                </p>
+                <span class="text-black dark:text-white">¿Cómo solicito un nuevo código?</span>
+                <p class="text-black dark:text-white mb-1">
+                  Si ingresas al enlace de verificación y el código ha caducado, tendrás la opción de solicitar un nuevo código desde la misma página que el enlace de verificación te muestra. En caso de no poder acceder al enlace de verificación, al momento de iniciar sesión con una cuenta no verificada, la página creará un nuevo código que será enviado al correo electrónico con el que te registraste. Al igual que la primera vez, el código vencerá en una hora.
+                </p>
+              </div>
+            </div>
+            <h2>
+              <button @click="showModal('11')" type="button" class="flex items-center justify-between w-full p-4 font-medium rtl:text-right bg-white text-gris-antracita border border-b-0 border-gris-perla focus:ring-2 focus:ring-plata transition duration-500 dark:bg-gray-700 dark:focus:ring-gris-antracita dark:border-gris-marengo dark:text-plata hover:bg-gris-antracita hover:text-gris-perla dark:hover:bg-plata dark:hover:text-gris-antracita gap-3">
+                <span class="flex items-center text-sm md:text-base 2xl:text-xl 3xl:text-2xl">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 w-6 h-6 2xl:w-7 2xl:h-7 3xl:w-8 3xl:h-8" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10a10 10 0 0 0 10-10A10 10 0 0 0 12 2M7.07 18.28c.43-.9 3.05-1.78 4.93-1.78s4.5.88 4.93 1.78A7.9 7.9 0 0 1 12 20c-1.86 0-3.57-.64-4.93-1.72m11.29-1.45c-1.43-1.74-4.9-2.33-6.36-2.33s-4.93.59-6.36 2.33A7.93 7.93 0 0 1 4 12c0-4.41 3.59-8 8-8s8 3.59 8 8c0 1.82-.62 3.5-1.64 4.83M12 6c-1.94 0-3.5 1.56-3.5 3.5S10.06 13 12 13s3.5-1.56 3.5-3.5S13.94 6 12 6m0 5a1.5 1.5 0 0 1-1.5-1.5A1.5 1.5 0 0 1 12 8a1.5 1.5 0 0 1 1.5 1.5A1.5 1.5 0 0 1 12 11"/>
+                  </svg>
+                  Cuenta de usuario
+                </span>
+                <svg :class="ventana === '11' ? 'rotate-180 duration-300' : 'rotate-0 duration-300'" data-accordion-icon class="w-3 h-3 2xl:w-4 2xl:h-4 3xl:w-5 3xl:h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+                </svg>
+              </button>
+            </h2>
+            <div v-if="ventana === '11'">
+              <div class="text-sm md:text-base 2xl:text-lg 3xl:text-xl p-5 border border-b-0 border-gris-perla bg-plata dark:border-gris-marengo dark:bg-gris-antracita">
+                <p class="text-black dark:text-white mb-1">
+                  En tu cuenta de usuario en Psicobot, encontrarás diversas funcionalidades diseñadas para mejorar tu experiencia. A través del chatbot, podrás acceder a apoyo emocional y reflexionar sobre tus inquietudes de manera confidencial. Además, podrás solicitar una cita con el servicio de orientación psicológica cuando lo necesites, y si has solicitados algunas citas de orientación, podrás verlas en un historial con detalles como la fecha, hora, asunto, el progreso entre otros datos más.
+                </p>
+                <p class="text-black dark:text-white mb-1">
+                  Para gestionar tu cuenta, tienes la opción de cambiar tu nombre de usuario, actualizar tu correo institucional y restablecer tu contraseña. Si en algún momento decides que ya no necesitas tu cuenta, también tendrás la opción de borrarla de manera sencilla y segura.
+                </p>
+              </div>
+            </div>
+            <h2>
+              <button @click="showModal('12')" type="button" class="flex items-center justify-between w-full p-4 font-medium rtl:text-right bg-white text-gris-antracita border border-b-0 border-gris-perla focus:ring-2 focus:ring-plata transition duration-500 dark:bg-gray-700 dark:focus:ring-gris-antracita dark:border-gris-marengo dark:text-plata hover:bg-gris-antracita hover:text-gris-perla dark:hover:bg-plata dark:hover:text-gris-antracita gap-3">
+                <span class="flex items-center text-sm md:text-base 2xl:text-xl 3xl:text-2xl">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 w-6 h-6 2xl:w-7 2xl:h-7 3xl:w-8 3xl:h-8" viewBox="0 0 48 48">
+                    <path fill="currentColor" d="M4 13.25A6.25 6.25 0 0 1 10.25 7h27.5A6.25 6.25 0 0 1 44 13.25v15.264a11 11 0 0 0-2.5-1.554V13.25a3.75 3.75 0 0 0-3.75-3.75h-27.5a3.75 3.75 0 0 0-3.75 3.75v15.5a3.75 3.75 0 0 0 3.75 3.75h13.654l2.5 2.5H10.25A6.25 6.25 0 0 1 4 28.75zM33.25 25c-.301 0-.578-.107-.794-.285a3.2 3.2 0 0 0-.44-1.171A1.25 1.25 0 0 1 33.25 22.5h4.5a1.25 1.25 0 1 1 0 2.5zm-6.482-4l1.244 1.244a3.2 3.2 0 0 0-1.06.708l-.884.884L25 22.768l-1.866 1.866a1.25 1.25 0 0 1-1.768-1.768L23.232 21l-1.866-1.866a1.25 1.25 0 0 1 1.768-1.768L25 19.232l1.866-1.866a1.25 1.25 0 0 1 1.768 1.768zm-16.402-3.634a1.25 1.25 0 0 1 1.768 0L14 19.232l1.866-1.866a1.25 1.25 0 0 1 1.768 1.768L15.768 21l1.866 1.866a1.25 1.25 0 0 1-1.768 1.768L14 22.768l-1.866 1.866a1.25 1.25 0 0 1-1.768-1.768L12.232 21l-1.866-1.866a1.25 1.25 0 0 1 0-1.768m19.768 8.768a1.25 1.25 0 0 0-1.768-1.768l-4 4a1.25 1.25 0 0 0 0 1.768l4 4a1.25 1.25 0 0 0 1.768-1.768L28.268 30.5H37a6.5 6.5 0 1 1-6.415 7.553a1.25 1.25 0 1 0-2.468.402C28.813 42.734 32.524 46 37 46a9 9 0 0 0 0-18h-8.732z"/>
+                  </svg>
+                  Recuperar contraseña
+                </span>
+                <svg :class="ventana === '12' ? 'rotate-180 duration-300' : 'rotate-0 duration-300'" data-accordion-icon class="w-3 h-3 2xl:w-4 2xl:h-4 3xl:w-5 3xl:h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+                </svg>
+              </button>
+            </h2>
+            <div v-if="ventana === '12'">
+              <div class="text-sm md:text-base 2xl:text-lg 3xl:text-xl p-5 border border-b-0 border-gris-perla bg-plata dark:border-gris-marengo dark:bg-gris-antracita">
+                <p class="text-black dark:text-white mb-1">
+                  Si has olvidado tu contraseña, no te preocupes, puedes recuperarla de manera rápida y segura. Simplemente ingresa al enlace "¿Olvidaste tu contraseña?" y escribe tu correo institucional, luego recibirás un mensaje con un enlace para restablecer tu contraseña.
+                </p>
+                <p class="text-black dark:text-white mb-1">
+                  Ten en cuenta que este enlace será válido por una hora, así que asegúrate de utilizarlo dentro de ese plazo para restablecer tu acceso a la aplicación, si el enlace se vence puedes volver a intentarlo.
+                </p>
+              </div>
+            </div>
+            <h2>
+              <button @click="showModal('13')" type="button" class="flex items-center justify-between w-full p-4 font-medium rtl:text-right bg-white text-gris-antracita border border-b-0 border-gris-perla focus:ring-2 focus:ring-plata transition duration-500 dark:bg-gray-700 dark:focus:ring-gris-antracita dark:border-gris-marengo dark:text-plata hover:bg-gris-antracita hover:text-gris-perla dark:hover:bg-plata dark:hover:text-gris-antracita gap-3">
+                <span class="flex items-center text-sm md:text-base 2xl:text-xl 3xl:text-2xl">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 w-6 h-6 2xl:w-7 2xl:h-7 3xl:w-8 3xl:h-8" width="1em" height="1em" viewBox="0 0 24 24">
+                    <g fill="none" fill-rule="evenodd"><path d="m12.594 23.258l-.012.002l-.071.035l-.02.004l-.014-.004l-.071-.036q-.016-.004-.024.006l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.016-.018m.264-.113l-.014.002l-.184.093l-.01.01l-.003.011l.018.43l.005.012l.008.008l.201.092q.019.005.029-.008l.004-.014l-.034-.614q-.005-.019-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.003-.011l.018-.43l-.003-.012l-.01-.01z"/>
+                      <path fill="currentColor" d="M11 4a3 3 0 1 0 0 6a3 3 0 0 0 0-6M6 7a5 5 0 1 1 10 0A5 5 0 0 1 6 7M4.413 17.601c-.323.41-.413.72-.413.899c0 .122.037.251.255.426c.249.2.682.407 1.344.582C6.917 19.858 8.811 20 11 20q.333 0 .658-.005a1 1 0 0 1 .027 2Q11.345 22 11 22c-2.229 0-4.335-.14-5.913-.558c-.785-.208-1.524-.506-2.084-.956C2.41 20.01 2 19.345 2 18.5c0-.787.358-1.523.844-2.139c.494-.625 1.177-1.2 1.978-1.69C6.425 13.695 8.605 13 11 13q.671 0 1.316.07a1 1 0 0 1-.211 1.989Q11.564 15 11 15c-2.023 0-3.843.59-5.136 1.379c-.647.394-1.135.822-1.45 1.222Zm12.173-2.43a1 1 0 0 0-1.414 1.415L16.586 18l-1.414 1.414a1 1 0 1 0 1.414 1.414L18 19.414l1.414 1.414a1 1 0 1 0 1.414-1.414L19.414 18l1.414-1.414a1 1 0 0 0-1.414-1.414L18 16.586z"/>
+                    </g>
+                  </svg>
+                  Borrar la cuenta
+                </span>
+                <svg :class="ventana === '13' ? 'rotate-180 duration-300' : 'rotate-0 duration-300'" data-accordion-icon class="w-3 h-3 2xl:w-4 2xl:h-4 3xl:w-5 3xl:h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+                </svg>
+              </button>
+            </h2>
+            <div v-if="ventana === '13'">
+              <div class="text-sm md:text-base 2xl:text-lg 3xl:text-xl p-5 border border-b-0 border-gris-perla bg-plata dark:border-gris-marengo dark:bg-gris-antracita">
+                <p class="text-black dark:text-white mb-1">
+                  Para borrar tu cuenta debes acceder a las configuración del perfil. Una vez borres tu cuenta no podrás volver a recuperarla, pero puedes registrarte nuevamente.
+                </p>
+                <p class="text-black dark:text-white mb-1">
+                  Una vez la cuenta es borrada todos tus datos personales son completamente eliminados de la aplicación. Sin embargo, se conservarán algunos datos relacionados con las citas de orientación psicológica que solicitaste, estos datos se mantienen únicamente con el propósito de llevar un registro histórico de las citas de orientación psicológica solicitadas.
+                </p>
+                <p class="text-black dark:text-white mb-1">
+                  ¿Que datos son eliminados?
+                </p>
+                <ul class="ps-5 text-gris-antracita list-disc dark:text-plata">
+                  <li>
+                    Número de T.I. o C.C. del solicitante
+                  </li>
+                  <li>
+                    Nombres del solicitante
+                  </li>
+                  <li>
+                    Apellidos del solicitante
+                  </li>
+                  <li>
+                    Correo electrónico del solicitante
+                  </li>
+                  <li>
+                    Número de teléfono del solicitante
+                  </li>
+                </ul>
+                <p class="text-black dark:text-white mb-1">
+                  ¿Que datos se conservan?
+                </p>
+                <ul class="ps-5 text-gris-antracita list-disc dark:text-plata">
+                  <li>
+                    Semestre del solicitante
+                  </li>
+                  <li>
+                    Programa del solicitante
+                  </li>
+                  <li>
+                    Público al que pertenece el solicitante
+                  </li>
+                  <li>
+                    Fecha y hora de la cita
+                  </li>
+                  <li>
+                    Asunto de la cita
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <h2>
+              <button @click="showModal('14')" type="button" class="flex items-center justify-between w-full rounded-b-xl p-4 font-medium rtl:text-right bg-white text-gris-antracita border border-b-0 border-gris-perla focus:ring-2 focus:ring-plata transition duration-500 dark:bg-gray-700 dark:focus:ring-gris-antracita dark:border-gris-marengo dark:text-plata hover:bg-gris-antracita hover:text-gris-perla dark:hover:bg-plata dark:hover:text-gris-antracita gap-3">
+                <span class="flex items-center text-sm md:text-base 2xl:text-xl 3xl:text-2xl">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 w-6 h-6 2xl:w-7 2xl:h-7 3xl:w-8 3xl:h-8" width="1em" height="1em" viewBox="0 0 16 16">
+                    <path fill="currentColor" fill-rule="evenodd" d="m4.665 7.822l.62-3.096a2.77 2.77 0 0 1 5.43 0l.62 3.096a4.8 4.8 0 0 0 1.305 2.44l.194.193a.567.567 0 0 1-.273.953l-.821.19a16.6 16.6 0 0 1-7.48 0l-.82-.19a.567.567 0 0 1-.274-.953l.194-.193a4.77 4.77 0 0 0 1.305-2.44m-1.47-.294l.619-3.096a4.27 4.27 0 0 1 8.372 0l.62 3.096c.126.634.438 1.216.895 1.673l.194.194a2.066 2.066 0 0 1-.997 3.475l-.821.19q-1.053.24-2.12.358a2 2 0 0 1-3.913 0a18 18 0 0 1-2.12-.359l-.822-.19a2.067 2.067 0 0 1-.997-3.474L2.3 9.2c.457-.457.769-1.04.895-1.673" clip-rule="evenodd"/>
+                  </svg>
+                  Notificaciones
+                </span>
+                <svg :class="ventana === '14' ? 'rotate-180 duration-300' : 'rotate-0 duration-300'" data-accordion-icon class="w-3 h-3 2xl:w-4 2xl:h-4 3xl:w-5 3xl:h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+                </svg>
+              </button>
+            </h2>
+            <div v-if="ventana === '14'">
+              <div class="text-sm md:text-base 2xl:text-lg 3xl:text-xl p-5 border border-b-0 border-gris-perla bg-plata dark:border-gris-marengo dark:bg-gris-antracita">
+                <p class="text-black dark:text-white mb-1">
+                  Recibirás notificaciones al correo electrónico con el que te registraste a Psicobot, relacionadas con las siguientes acciones en la aplicación:
+                </p>
+                <ul class="ps-5 text-gris-antracita list-disc dark:text-plata">
+                  <li>
+                    <span class="text-black dark:text-white">Progreso de tus citas: </span>
+                    Se te notificará si alguna de las citas que solicitaste fue aceptada o cancelada por el profesional del área encargada.
+                  </li>
+                  <li>
+                    <span class="text-black dark:text-white">Cambios en el horario: </span>
+                    El profesional encargado puede modificar la hora de tu cita, y recibirás un correo informándote del cambio.
+                  </li>
+                  <li>
+                    <span class="text-black dark:text-white">Verificación de cuenta: </span>
+                    Si tu cuenta no está verificada, recibirás una notificación con un código y un enlace para completar la verificación.
+                  </li>
+                  <li>
+                    <span class="text-black dark:text-white">Reestablecimiento de contraseña: </span>
+                    En caso de que olvides tu contraseña y solicites un restablecimiento, recibirás un correo con la confirmación de tu solicitud y un enlace para cambiar tu contraseña.
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+{% endblock %}

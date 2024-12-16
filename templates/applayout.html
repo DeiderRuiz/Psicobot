@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Bree+Serif&display=swap" rel="stylesheet" />
+    <link rel="icon" type="Images/ico" href="{{url_for('static',filename='favicon.ico')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/main.css')}}">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <title>Psicobot - {% block title %}{% endblock %}</title>
+</head>
+<body class="font-bree-serif antialiased flex flex-col h-screen dark:bg-gray-900" id="app" v-cloak>
+  <nav class="bg-verde-uajs fixed w-full z-50 top-0 start-0 shadow-lg dark:bg-gray-700">
+    <div class="min-w-screen-sm max-w-screen-3xl flex flex-wrap items-center justify-between mx-auto px-8 py-4">
+      <a href="{{ url_for('panel_admin.PanelDeAdministracion') if session['id_roles'] == 1 else url_for('user.PanelDeUsuario') }}" class="flex items-center space-x-3 rtl:space-x-reverse">
+          <div class="flex w-8 h-8 2xl:w-10 2xl:h-10 3xl:w-12 3xl:h-12 text-sm rounded-full bg-logo bg-cover bg-center"></div>
+          <span v-if="url == '/PanelDeAdministracion' || url == '/PanelDeUsuario'" class="self-center text-2xl 2xl:text-3xl 3xl:text-4xl whitespace-nowrap text-white">Psicobot</span>
+          <span v-else class="self-center text-2xl 2xl:text-3xl 3xl:text-4xl whitespace-nowrap text-white">Inicio</span>
+      </a>
+      <div class="relative ml-3">
+          <button type="button" @click="showModal('perfil')" class="flex items-center justify-end hover:scale-110 2xl:text-xl 3xl:text-2xl ease-in-out delay-150 duration-300" aria-expanded="false" aria-haspopup="true">
+              <span class="block px-2 text-white font-medium">{{ session['nombres'] }} {{ session['apellidos']}}</span>
+              <div class="relative flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 dark:bg-plata">
+                  <svg class="w-8 h-8 2xl:w-10 2xl:h-10 3xl:w-12 3xl:h-12 text-verde-paris dark:text-gray-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                      <path fill-rule="evenodd" d="M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4h-4Z" clip-rule="evenodd"/>
+                  </svg>
+              </div>
+          </button>
+          <div v-if="ventana === 'perfil'" class="absolute right-0 z-10 mt-2 min-w-48 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gris-antracita">
+            <p class="block px-4 py-2 text-sm 2xl:text-xl 3xl:text-2xl text-gray-700 dark:text-gray-200">{{ session['email'] }}</p>
+            <hr>
+            {% if perfil_usuario.id_roles == 2 %}
+              <a class="block flex items-center justify-between px-4 py-2 2xl:text-xl 3xl:text-2xl text-gray-700 hover:bg-gris-antracita hover:text-plata dark:text-white transition duration-700 dark:hover:bg-plata dark:hover:text-gris-antracita" href="{{ url_for('solicitud.SolicitarCita') }}">
+                <div class="flex items-center justify-start">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 2xl:w-8 2xl:h-8 3xl:w-10 3xl:h-10" width="1em" height="1em" viewBox="0 0 20 20">
+                        <path fill="currentColor" d="M7 9.5a.5.5 0 1 1-1 0a.5.5 0 0 1 1 0M6.5 14a.5.5 0 1 0 0-1a.5.5 0 0 0 0 1M3 6a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v3.6a5.5 5.5 0 0 0-2.5-.6h-5a.5.5 0 0 0 0 1h1.837A5.5 5.5 0 0 0 9 14.5c0 .9.216 1.75.6 2.5H6a3 3 0 0 1-3-3zm2.5-1a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1zm1 6a1.5 1.5 0 1 0 0-3a1.5 1.5 0 0 0 0 3M8 13.5a1.5 1.5 0 1 0-3 0a1.5 1.5 0 0 0 3 0m11 1a4.5 4.5 0 1 1-9 0a4.5 4.5 0 0 1 9 0m-4-2a.5.5 0 0 0-1 0V14h-1.5a.5.5 0 0 0 0 1H14v1.5a.5.5 0 0 0 1 0V15h1.5a.5.5 0 0 0 0-1H15z"/>
+                    </svg>
+                    <span>Solicitar Cita</span>
+                </div>
+                <svg class="w-6 h-6 2xl:w-8 2xl:h-8 3xl:w-10 3xl:h-10" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7"/>
+                </svg>
+              </a>
+              <a class="block flex items-center justify-between px-4 py-2 2xl:text-xl 3xl:text-2xl text-gray-700 hover:bg-gris-antracita hover:text-plata dark:text-white transition duration-700 dark:hover:bg-plata dark:hover:text-gris-antracita" href="{{ url_for('gestionar_cita.gestionar_cita_view') }}">
+                <div class="flex items-center justify-start">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 2xl:w-8 2xl:h-8 3xl:w-10 3xl:h-10" width="1em" height="1em" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M6.616 21q-.691 0-1.153-.462T5 19.385V4.615q0-.69.463-1.152T6.616 3h7.213q.323 0 .628.13t.522.349L18.52 7.02q.217.218.348.522t.131.628v2.248q0 .218-.134.379q-.133.162-.345.223q-.362.131-.666.32q-.305.19-.586.47l-5.515 5.497q-.217.217-.351.522q-.134.304-.134.628v1.734q0 .348-.23.578t-.577.23zm7.038-.808V19.12q0-.161.056-.3q.055-.14.186-.271l5.09-5.065q.148-.13.308-.19q.16-.062.32-.062q.165 0 .334.064q.17.065.298.194l.925.944q.123.148.188.308q.064.159.064.319t-.061.322t-.19.31l-5.066 5.066q-.131.13-.27.186q-.14.056-.302.056h-1.073q-.348 0-.577-.23q-.23-.23-.23-.578m5.96-4.176l.924-.956l-.925-.944l-.95.95zM14.807 8H18l-4-4l4 4l-4-4v3.192q0 .348.23.578t.578.23"/>
+                    </svg>
+                    <span>Gestionar Citas</span>
+                </div>
+                <svg class="w-6 h-6 2xl:w-8 2xl:h-8 3xl:w-10 3xl:h-10" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7"/>
+                </svg>
+              </a>
+            {% endif %}
+            <a class="block flex items-center justify-between px-4 py-2 2xl:text-xl 3xl:text-2xl text-gray-700 hover:bg-gris-antracita hover:text-plata dark:text-white transition duration-700 dark:hover:bg-plata dark:hover:text-gris-antracita" href="{{ url_for('profile.perfil', idusers=perfil_usuario['idusers']) }}">
+                <div class="flex items-center justify-start">
+                    <svg class="w-6 h-6 2xl:w-8 2xl:h-8 3xl:w-10 3xl:h-10" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd" d="M17 10v1.126c.367.095.714.24 1.032.428l.796-.797 1.415 1.415-.797.796c.188.318.333.665.428 1.032H21v2h-1.126c-.095.367-.24.714-.428 1.032l.797.796-1.415 1.415-.796-.797a3.979 3.979 0 0 1-1.032.428V20h-2v-1.126a3.977 3.977 0 0 1-1.032-.428l-.796.797-1.415-1.415.797-.796A3.975 3.975 0 0 1 12.126 16H11v-2h1.126c.095-.367.24-.714.428-1.032l-.797-.796 1.415-1.415.796.797A3.977 3.977 0 0 1 15 11.126V10h2Zm.406 3.578.016.016c.354.358.574.85.578 1.392v.028a2 2 0 0 1-3.409 1.406l-.01-.012a2 2 0 0 1 2.826-2.83ZM5 8a4 4 0 1 1 7.938.703 7.029 7.029 0 0 0-3.235 3.235A4 4 0 0 1 5 8Zm4.29 5H7a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h6.101A6.979 6.979 0 0 1 9 15c0-.695.101-1.366.29-2Z" clip-rule="evenodd"/>
+                    </svg>
+                    <span>Configuración</span>
+                </div>
+                <svg class="w-6 h-6 2xl:w-8 2xl:h-8 3xl:w-10 3xl:h-10" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7"/>
+                </svg>
+            </a>
+            <a @click="cerrarSesion" href="{{ url_for('logout.cerrar_sesion') }}" class="block flex items-center justify-start px-4 py-2 2xl:text-xl 3xl:text-2xl text-gray-700 hover:bg-gris-antracita hover:text-plata transition duration-700 dark:text-white dark:hover:bg-plata dark:hover:text-gris-antracita">
+                <svg class="w-6 h-6 2xl:w-8 2xl:h-8 3xl:w-10 3xl:h-10" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H8m12 0-4 4m4-4-4-4M9 4H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h2"/>
+                </svg>
+                <span>Cerrar sesión</span>
+            </a>
+          </div>
+      </div>
+    </div>
+  </nav>
+  <main class="mt-16 2xl:mt-[72px] 3xl:mt-[80px] bg-gray-50 h-screen dark:bg-gray-900 dark:text-white">
+    {% block main %}
+    {% endblock %}
+  </main>
+  <script src="{{ url_for('static', filename='js/Vue.js') }}"></script>
+</body>
+</html>

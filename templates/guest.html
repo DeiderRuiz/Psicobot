@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% block navbar %}
+    <nav class="bg-verde-uajs fixed w-full z-50 top-0 start-0 shadow-lg dark:bg-gray-700">
+      <div class="min-w-screen-sm max-w-screen-3xl flex flex-wrap items-center justify-between mx-auto px-8 py-4">
+        <a href="{{ url_for('views.index') }}" class="flex items-center space-x-3 rtl:space-x-reverse">
+          <div class="flex w-8 h-8 2xl:w-10 2xl:h-10 3xl:w-12 3xl:h-12 text-sm rounded-full bg-logo bg-cover bg-center"></div>
+          <span class="self-center text-2xl 2xl:text-3xl 3xl:text-4xl whitespace-nowrap text-white hover:text-plata transition duration-500">Psicobot</span>
+        </a>
+        <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1">
+          <ul class="flex flex-col font-medium text-white p-4 md:p-0 mt-4 border rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0">
+            <li v-if="url != '/'">
+              <a href="{{ url_for('views.index') }}" class="flex items-center justify-center 2xl:text-xl 3xl:text-2xl hover:text-plata transition duration-500">
+                <svg class="w-6 h-6 2xl:w-7 2xl:h-7 3xl:w-8 3xl:h-8" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                  <path fill-rule="evenodd" d="M11.293 3.293a1 1 0 0 1 1.414 0l6 6 2 2a1 1 0 0 1-1.414 1.414L19 12.414V19a2 2 0 0 1-2 2h-3a1 1 0 0 1-1-1v-3h-2v3a1 1 0 0 1-1 1H7a2 2 0 0 1-2-2v-6.586l-.293.293a1 1 0 0 1-1.414-1.414l2-2 6-6Z" clip-rule="evenodd"/>
+                </svg>
+                <span>Inicio</span>
+              </a>
+            </li>
+            <li>
+              <a href="{{ url_for('views.atencion') }}" class="flex items-center justify-center 2xl:text-xl 3xl:text-2xl hover:text-plata transition duration-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 2xl:w-7 2xl:h-7 3xl:w-8 3xl:h-8" viewBox="0 0 24 24">
+                  <path fill="currentColor" d="M9 21q-1.65 0-2.825-1.175T5 17V8.825Q4.125 8.5 3.563 7.738T3 6q0-1.25.875-2.125T6 3t2.125.875T9 6q0 .975-.562 1.738T7 8.825V17q0 .825.588 1.413T9 19t1.413-.587T11 17V7q0-1.65 1.175-2.825T15 3t2.825 1.175T19 7v8.175q.875.325 1.438 1.088T21 18q0 1.25-.875 2.125T18 21t-2.125-.875T15 18q0-.975.563-1.75T17 15.175V7q0-.825-.587-1.412T15 5t-1.412.588T13 7v10q0 1.65-1.175 2.825T9 21"/>
+                </svg>
+                <span>Rutas De Atención</span>
+              </a>
+            </li>
+            <li>
+              <a href="http://app.appyudame.com" target="_blank" class="flex items-center justify-center 2xl:text-xl 3xl:text-2xl hover:text-plata transition duration-500">
+                <svg class="w-6 h-6 2xl:w-7 2xl:h-7 3xl:w-8 3xl:h-8" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.213 9.787a3.391 3.391 0 0 0-4.795 0l-3.425 3.426a3.39 3.39 0 0 0 4.795 4.794l.321-.304m-.321-4.49a3.39 3.39 0 0 0 4.795 0l3.424-3.426a3.39 3.39 0 0 0-4.794-4.795l-1.028.961"/>
+                </svg>
+                <span>Appyudame</span>
+              </a>
+            </li>
+            <li>
+              <a href="{{ url_for('views.about') }}" class="flex items-center justify-center 2xl:text-xl 3xl:text-2xl hover:text-plata transition duration-500">
+                <svg class="w-6 h-6 2xl:w-7 2xl:h-7 3xl:w-8 3xl:h-8" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                  <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm9.408-5.5a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2h-.01ZM10 10a1 1 0 1 0 0 2h1v3h-1a1 1 0 1 0 0 2h4a1 1 0 1 0 0-2h-1v-4a1 1 0 0 0-1-1h-2Z" clip-rule="evenodd"/>
+                </svg>
+                <span>Acerca De</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <button @click="showModal('menu')" class="relative flex rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 hover:scale-110 ease-in-out delay-150 duration-300 md:hidden">
+            <svg class="w-12 h-12 text-white hover:text-plata" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-width="3" d="M5 7h14M5 12h14M5 17h14"/>
+            </svg>
+          </button>
+          <div v-if="ventana === 'menu'" class="absolute right-0 z-10 mt-2 min-w-48 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none md:hidden dark:bg-gris-antracita">
+            <a href="{{ url_for('views.index') }}" v-if="url != '/'" class="block flex items-center justify-start px-4 py-2 text-gray-700 hover:bg-gris-antracita hover:text-plata dark:text-white transition duration-700 dark:hover:bg-plata dark:hover:text-gris-antracita" role="menuitem">
+              <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                <path fill-rule="evenodd" d="M11.293 3.293a1 1 0 0 1 1.414 0l6 6 2 2a1 1 0 0 1-1.414 1.414L19 12.414V19a2 2 0 0 1-2 2h-3a1 1 0 0 1-1-1v-3h-2v3a1 1 0 0 1-1 1H7a2 2 0 0 1-2-2v-6.586l-.293.293a1 1 0 0 1-1.414-1.414l2-2 6-6Z" clip-rule="evenodd"/>
+              </svg>
+              <span>Inicio</span>
+            </a>
+            <a href="{{ url_for('views.atencion') }}" class="block flex items-center justify-start px-4 py-2 text-gray-700 hover:bg-gris-antracita hover:text-plata transition duration-700 dark:text-white dark:hover:bg-plata dark:hover:text-gris-antracita" role="menuitem">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M9 21q-1.65 0-2.825-1.175T5 17V8.825Q4.125 8.5 3.563 7.738T3 6q0-1.25.875-2.125T6 3t2.125.875T9 6q0 .975-.562 1.738T7 8.825V17q0 .825.588 1.413T9 19t1.413-.587T11 17V7q0-1.65 1.175-2.825T15 3t2.825 1.175T19 7v8.175q.875.325 1.438 1.088T21 18q0 1.25-.875 2.125T18 21t-2.125-.875T15 18q0-.975.563-1.75T17 15.175V7q0-.825-.587-1.412T15 5t-1.412.588T13 7v10q0 1.65-1.175 2.825T9 21"/>
+              </svg>
+              <span>Rutas De Atención</span>
+            </a>
+            <a href="http://app.appyudame.com" target="_blank" class="block flex items-center justify-start px-4 py-2 text-gray-700 hover:bg-gris-antracita hover:text-plata transition duration-700 dark:text-white dark:hover:bg-plata dark:hover:text-gris-antracita" role="menuitem">
+              <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.213 9.787a3.391 3.391 0 0 0-4.795 0l-3.425 3.426a3.39 3.39 0 0 0 4.795 4.794l.321-.304m-.321-4.49a3.39 3.39 0 0 0 4.795 0l3.424-3.426a3.39 3.39 0 0 0-4.794-4.795l-1.028.961"/>
+              </svg>
+              <span>Appyudame</span>
+            </a>
+            <a href="{{ url_for('views.about') }}" class="block flex items-center justify-start px-4 py-2 text-gray-700 hover:bg-gris-antracita hover:text-plata transition duration-700 dark:text-white dark:hover:bg-plata dark:hover:text-gris-antracita" role="menuitem">
+              <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm9.408-5.5a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2h-.01ZM10 10a1 1 0 1 0 0 2h1v3h-1a1 1 0 1 0 0 2h4a1 1 0 1 0 0-2h-1v-4a1 1 0 0 0-1-1h-2Z" clip-rule="evenodd"/>
+              </svg>
+              <span>Acerca De</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+{% endblock %}
+{% block main %}
+  <main class="flex flex-1 grid grid-cols-1 md:grid-cols-2 gap-2 h-screen mt-16 2xl:mt-[72px] 3xl:mt-[80px] bg-gray-100 dark:bg-gray-900">
+    <div class="relative bg-uajs bg-cover bg-center hidden md:block"></div>
+    <div class="flex items-center justify-center p-6 bg-uajs bg-cover bg-center md:bg-none">
+      <div class="w-96 2xl:w-[30rem] 3xl:w-[32rem] rounded-lg bg-white border border-gris-perla shadow dark:bg-gray-700 dark:text-white dark:border-gris-marengo">
+        <div class="p-5 text-center">
+          <h3 class="mb-2 tracking-tight text-3xl 2xl:text-4xl 3xl:text-5xl">Psicobot</h3>
+          <p class="2xl:text-lg 3xl:text-2xl">Asistente Psicológico Virtual</p>
+          {% block content %}
+          {% endblock %}
+        </div>
+      </div>
+    </div>
+  </main>
+{% endblock %}

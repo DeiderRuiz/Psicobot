@@ -1,0 +1,126 @@
+<!-- Vista de los detales de la cita de orientación psicologica -->
+{% extends 'applayout.html' %}
+{% block title %}Solicitudes{% endblock %}
+{% block main %}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-2 h-xl-screen 2xl:h-2xl-screen 3xl:h-3xl-screen">
+        <div class="relative bg-uajs bg-cover bg-center hidden md:block h-full"></div>
+        <div class="relative p-5 overflow-x-auto">
+            <h5 class="mb-2 text-lg md:text-xl 2xl:text-2xl 3xl:text-3xl uppercase font-medium text-center">Mis solicitudes de cita de orientación psicológica</h5>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <ul class=flashes>
+                        {% for category, message in messages %}
+                            {% if category == 'success' %}
+                                <div class="flex items-center p-2 mb-4 text-sm 2xl:text-base border border-green-900 dark:border-green-50 text-verde-musgo rounded-lg bg-verde-paris" role="alert">
+                                    <svg class="flex-shrink-0 inline w-5 h-5 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                        <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm13.707-1.293a1 1 0 0 0-1.414-1.414L11 12.586l-1.793-1.793a1 1 0 0 0-1.414 1.414l2.5 2.5a1 1 0 0 0 1.414 0l4-4Z" clip-rule="evenodd"/>
+                                    </svg>
+                                    <li class="font-medium">{{ message }}</li>
+                                </div>
+                            {% endif %}
+                            {% if category == 'error' %}
+                                <div class="flex items-center p-2 mb-4 text-sm 2xl:text-base border border-rojo-blood dark:border-red-50 text-red-50 rounded-lg bg-rojo-u" role="alert">
+                                    <svg class="flex-shrink-0 inline w-5 h-5 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                        <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v5a1 1 0 1 0 2 0V8Zm-1 7a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12Z" clip-rule="evenodd"/>
+                                    </svg>
+                                    <li class="font-medium">{{ message }}</li>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+            {% for cita in citas %}
+                <div class="w-full p-6 mb-4 rounded-lg bg-white border border-gris-perla shadow dark:bg-gray-700 dark:text-white dark:border-gris-marengo">
+                    <h5 class="mb-2 text-lg 2xl:text-xl 3xl:text-2xl tracking-tight text-black dark:text-white">Solicitud de cita para el {{ cita.fecha.title() }} a las {{ cita.hora.upper() }}</h5>
+                    <p class="mb-3 font-normal text-gris-marengo text-sm md:text-base 2xl:text-lg 3xl:text-xl dark:text-gris-perla truncate">
+                        <span class="text-black dark:text-white">Motivo de consulta:</span> {{ cita.asunto.capitalize() }}
+                    </p>
+                    <p class="mb-3 font-normal text-gris-marengo text-sm md:text-base 2xl:text-lg 3xl:text-xl dark:text-gris-perla truncate">
+                        <span class="text-black dark:text-white">Estado de la solicitud:</span> {{ cita.progreso.capitalize() }}
+                    </p>
+                    <div class="flex items center justify-start">
+                        <a href="{{ url_for('detalleCita.detalle_cita_view', id=cita.id) }}" class="inline-flex items-center mr-2 px-3 py-2 font-medium text-xs md:text-sm 2xl:text-base 3xl:text-lg text-center bg-verde-uajs border border-verde-paris rounded-md text-white uppercase tracking-wider hover:bg-verde-paris hover:text-black hover:border-verde-uajs focus:bg-verde-paris focus:text-black focus:outline-none focus:ring-2 focus:ring-verde-paris focus:ring-offset-2 hover:scale-110 ease-in-out delay-150 duration-300">
+                            Ver Detalles
+                            <svg class="w-5 h-5 2xl:w-6 2xl:h-6 3xl:w-7 3xl:h-7 ms-2 hidden md:block" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v5a1 1 0 1 0 2 0V8Zm-1 7a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12Z" clip-rule="evenodd"/>
+                            </svg>
+                        </a>
+                        {% if cita.progreso == 'pendiente' %}
+                            <button @click="showModal('{{ cita['id'] }}')" class="inline-flex items-center mr-2 px-3 py-2 font-medium text-xs md:text-sm 2xl:text-base 3xl:text-lg text-center bg-verde-uajs border border-verde-paris rounded-md text-white uppercase tracking-wider hover:bg-verde-paris hover:text-black hover:border-verde-uajs focus:bg-verde-paris focus:text-black focus:outline-none focus:ring-2 focus:ring-verde-paris focus:ring-offset-2 hover:scale-110 ease-in-out delay-150 duration-300">
+                                Cancelar Cita
+                                <svg class="w-5 h-5 2xl:w-6 2xl:h-6 3xl:w-7 3xl:h-7 ms-2 hidden md:block" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                    <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z" clip-rule="evenodd"/>
+                                </svg>
+                            </button>
+                            <div v-if="ventana === '{{ cita['id'] }}'" class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 bottom-0 left-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
+                                <div class="relative p-4 w-full max-w-md 2xl:max-w-xl max-h-full">
+                                    <div class="relative bg-white border border-gris-perla rounded-lg shadow dark:bg-gray-700 dark:text-white dark:border-gris-marengo">
+                                        <div class="p-4 md:p-5 text-center">
+                                            <svg class="mx-auto mb-4 text-red-500 w-12 h-12 2xl:w-14 2xl:h-14 3xl:w-16 3xl:h-16" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                                            </svg>
+                                            <h3 class="mb-5 text-lg 2xl:text-xl 3xl:text-2xl font-normal">¿Estás seguro de que quieres cancelar esta solicitud de cita? Esta acción no se puede deshacer.</h3>
+                                            <div class="flex items-center justify-center">
+                                                <form action="{{ url_for('cancelar_citas.cancelar_cita', id=cita['id']) }}" method="post">
+                                                    {{ form.hidden_tag() }}
+                                                    <button type="submit" class="flex justify-center text-xs md:text-sm 2xl:text-base 3xl:text-lg mb-2 ml-2 px-4 py-2 bg-red-500 border border-red-600 rounded-md text-white uppercase tracking-widest hover:bg-red-600 focus:bg-red-600 active:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 hover:scale-110 ease-in-out delay-150 duration-300">Sí, canelar cita</button>
+                                                </form>
+                                                <button @click="closeModal()" class="flex justify-center text-xs md:text-sm 2xl:text-base 3xl:text-lg mb-2 ml-2 p-2 bg-verde-uajs border border-verde-paris rounded-md text-white uppercase tracking-wider hover:bg-verde-paris hover:text-black hover:border-verde-uajs focus:bg-verde-paris focus:text-black focus:outline-none focus:ring-2 focus:ring-verde-paris focus:ring-offset-2 hover:scale-110 ease-in-out delay-150 duration-300">No, cancelar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+            {% if total_paginas > 1%}
+                <div class="w-full flex items-center justify-center">
+                    <nav>
+                        <p class="text-center">Página {{ page_num }} de {{ total_paginas }}</p>
+                        <ul class="flex items-center -space-x-px h-8 text-sm">
+                            <li>
+                                {% if page_num > 1 %}
+                                    <a href="{{ url_for('gestionar_cita.gestionar_cita_view', page_num=page_num - 1) }}" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gris-marengo bg-white border border-e-0 border-gris-perla rounded-s-lg hover:bg-plata hover:text-gris-antracita dark:bg-gray-900 dark:border-gris-antracita dark:text-gris-perla dark:hover:bg-gris-marengo dark:hover:text-white">
+                                        <span class="sr-only">Anterior</span>
+                                        <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
+                                        </svg>
+                                    </a>
+                                {% endif %}
+                            </li>
+                            {% for i in range(1, total_paginas + 1) %}
+                                {% if i == 1 or i == total_paginas or (i >= page_num - 5 and i <= page_num + 5) %}
+                                    <li>
+                                        {% if i == page_num %}
+                                            <span class="flex items-center justify-center px-3 h-8 leading-tight text-white bg-verde-uajs border border-gris-perla dark:bg-verde-paris dark:border-gris-antracita rounded-lg">{{ i }}</span>
+                                        {% else %}
+                                            <a href="{{ url_for('gestionar_cita.gestionar_cita_view', page_num=i) }}" class="flex items-center justify-center px-3 h-8 leading-tight text-gris-marengo bg-white border border-gris-perla hover:bg-plata hover:text-gris-antracita dark:bg-gray-900 dark:border-gris-antracita dark:text-gris-perla dark:hover:bg-gris-marengo dark:hover:text-white">{{ i }}</a>
+                                        {% endif %}
+                                    </li>
+                                {% elif i == page_num - 6 or i == page_num + 6 %}
+                                    <li>
+                                        <span class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 dark:border-gray-700 rounded-lg">…</span>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                            <li>
+                                {% if page_num < total_paginas %}
+                                    <a href="{{ url_for('gestionar_cita.gestionar_cita_view', page_num=page_num + 1) }}" class="flex items-center justify-center px-3 h-8 leading-tight text-gris-marengo bg-white border border-gris-perla rounded-e-lg hover:bg-plata hover:text-gris-antracita dark:bg-gray-900 dark:border-gris-antracita dark:text-gris-perla dark:hover:bg-gris-marengo dark:hover:text-white">
+                                        <span class="sr-only">Siguiente</span>
+                                        <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                                        </svg>
+                                    </a>
+                                {% endif %}
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+{% endblock %}

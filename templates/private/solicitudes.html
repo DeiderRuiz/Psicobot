@@ -1,0 +1,305 @@
+<!-- Vista donde el administrador ve todas las solicitudes de citas de orientación psicologica -->
+{% extends 'applayout.html' %}
+{% block title %}Solicitudes{% endblock %}
+{% block main %}
+    <div class="px-5 py-6">
+        <div class="block w-full bg-white border border-gris-perla rounded-lg shadow dark:bg-gray-700 dark:border-gris-marengo pb-1.5">
+            <form method="POST" action="{{ url_for('citas.Solicitudes', page_num=1) }}" class="w-full mx-auto pb-3">
+                {{ form.hidden_tag() }}
+                <div class="flex relative w-full" id="acciones">
+                    <div id="filtro">
+                        <button id="dropdown-button" @click="showModal('filtros')" data-dropdown-toggle="dropdown" class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm 2xl:text-lg 3xl:text-2xl font-medium text-center text-gray-900 bg-plata border-b border-r border-gris-perla rounded-tl-md hover:bg-gris-perla focus:ring-2 focus:outline-none focus:ring-plata dark:bg-gris-marengo dark:hover:bg-gris-antracita dark:focus:ring-gris-marengo dark:text-white dark:border-gris-marengo" type="button">
+                            Filtros
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 2xl:w-6 2xl:h-6 3xl:w-7 3xl:h-7 ms-2.5" width="1em" height="1em" viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M9 5a1 1 0 1 0 0 2a1 1 0 0 0 0-2M6.17 5a3.001 3.001 0 0 1 5.66 0H19a1 1 0 1 1 0 2h-7.17a3.001 3.001 0 0 1-5.66 0H5a1 1 0 0 1 0-2zM15 11a1 1 0 1 0 0 2a1 1 0 0 0 0-2m-2.83 0a3.001 3.001 0 0 1 5.66 0H19a1 1 0 1 1 0 2h-1.17a3.001 3.001 0 0 1-5.66 0H5a1 1 0 1 1 0-2zM9 17a1 1 0 1 0 0 2a1 1 0 0 0 0-2m-2.83 0a3.001 3.001 0 0 1 5.66 0H19a1 1 0 1 1 0 2h-7.17a3.001 3.001 0 0 1-5.66 0H5a1 1 0 1 1 0-2z"/>
+                            </svg>
+                        </button>
+                        <div v-if="ventana === 'filtros'" id="dropdown" class="absolute z-10 mt-2 min-w-48 origin-top-right rounded-md bg-white border border-gris-perla py-2 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gris-antracita dark:border-gris-marengo">
+                            <div class="grid grid-cols-2 py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdown-button">
+                                <div class="text-gris-antracita border-b border-t border-gris-plata dark:text-white dark:border-gris-marengo">
+                                    <div class="block flex items-center justify-start px-4 py-2 border-b border-gris-plata hover:bg-gris-antracita hover:text-plata transition duration-700 dark:hover:bg-plata dark:hover:text-gris-antracita dark:border-gris-marengo">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-2" viewBox="0 0 20 20">
+                                            <path fill="currentColor" d="M12.215 5.217a2.227 2.227 0 1 0-4.455 0a2.227 2.227 0 0 0 4.455 0M2.515 12h2.99V9.014l.008-.18c.026-.297.118-.575.26-.82H3.016l-.117.007a1 1 0 0 0-.883.993V11.5a.5.5 0 0 0 .5.5m15.475-.5a.5.5 0 0 1-.5.5h-3.016V9.014l-.006-.149a2 2 0 0 0-.262-.851h2.784a1 1 0 0 1 .993.884l.007.116zm-4.523-2.602a1 1 0 0 0-.994-.884H7.506l-.117.007a1 1 0 0 0-.883.993V12h6.969V9.014zm1.508-5.28a1.913 1.913 0 1 1 0 3.826a1.913 1.913 0 0 1 0-3.827M6.929 5.53a1.913 1.913 0 1 0-3.826 0a1.913 1.913 0 0 0 3.826 0M2.5 13a.5.5 0 0 0-.5.5v1A2.5 2.5 0 0 0 4.5 17h11a2.5 2.5 0 0 0 2.5-2.5v-1a.5.5 0 0 0-.5-.5z"/>
+                                        </svg>
+                                        <span>Público</span>
+                                    </div>
+                                    <ul class="text-xs">
+                                        <li class="flex items-center justify-start px-6 py-1">{{ form.estudiante(value="Estudiante", checked=form.estudiante.data, class_="w-4 h-4 mr-2 text-verde-uajs bg-gris-perla border border-gris-antracita rounded focus:ring-verde-paris dark:focus:ring-verde-uajs dark:ring-offset-gray-800 focus:ring-2 dark:bg-gris-marengo dark:border-gris-perla appearance-none checked:bg-verde-paris checked:border-gris-marengo relative checked:before:block before:hidden before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:text-white before:content-['✔'] before:leading-none before:text-xs") }}
+                                            <span>{{ form.estudiante.label }}</span>
+                                        </li>
+                                        <li class="flex items-center justify-start px-6 py-1">{{ form.egresado(value="Egresado", checked=form.egresado.data, class_="w-4 h-4 mr-2 text-verde-uajs bg-gris-perla border border-gris-antracita rounded focus:ring-verde-paris dark:focus:ring-verde-uajs dark:ring-offset-gray-800 focus:ring-2 dark:bg-gris-marengo dark:border-gris-perla appearance-none checked:bg-verde-paris checked:border-gris-marengo relative checked:before:block before:hidden before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:text-white before:content-['✔'] before:leading-none before:text-xs") }}
+                                            <span>{{ form.egresado.label }}</span>
+                                        </li>
+                                        <li class="flex items-center justify-start px-6 py-1">{{ form.egresado_no_graduado(value="Egresado NO Graduado", checked=form.egresado_no_graduado.data, class_="w-4 h-4 mr-2 text-verde-uajs bg-gris-perla border border-gris-antracita rounded focus:ring-verde-paris dark:focus:ring-verde-uajs dark:ring-offset-gray-800 focus:ring-2 dark:bg-gris-marengo dark:border-gris-perla appearance-none checked:bg-verde-paris checked:border-gris-marengo relative checked:before:block before:hidden before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:text-white before:content-['✔'] before:leading-none before:text-xs") }}
+                                            <span>{{ form.egresado_no_graduado.label }}</span>
+                                        </li>
+                                        <li class="flex items-center justify-start px-6 py-1">{{ form.docente(value="Docente", checked=form.docente.data, class_="w-4 h-4 mr-2 text-verde-uajs bg-gris-perla border border-gris-antracita rounded focus:ring-verde-paris dark:focus:ring-verde-uajs dark:ring-offset-gray-800 focus:ring-2 dark:bg-gris-marengo dark:border-gris-perla appearance-none checked:bg-verde-paris checked:border-gris-marengo relative checked:before:block before:hidden before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:text-white before:content-['✔'] before:leading-none before:text-xs") }}
+                                            <span>{{ form.docente.label }}</span>
+                                        </li>
+                                        <li class="flex items-center justify-start px-6 py-1">{{ form.administrativo(value="Administrativo", checked=form.administrativo.data, class_="w-4 h-4 mr-2 text-verde-uajs bg-gris-perla border border-gris-antracita rounded focus:ring-verde-paris dark:focus:ring-verde-uajs dark:ring-offset-gray-800 focus:ring-2 dark:bg-gris-marengo dark:border-gris-perla appearance-none checked:bg-verde-paris checked:border-gris-marengo relative checked:before:block before:hidden before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:text-white before:content-['✔'] before:leading-none before:text-xs") }}
+                                            <span>{{ form.administrativo.label }}</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="text-gris-antracita border-b border-t border-gris-plata dark:text-white dark:border-gris-marengo">
+                                    <div class="block flex items-center justify-start px-4 py-2 border-b border-gris-plata hover:bg-gris-antracita hover:text-plata transition duration-700 dark:hover:bg-plata dark:hover:text-gris-antracita dark:border-gris-marengo">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-2" viewBox="0 0 24 24">
+                                            <path fill="currentColor" d="M12 4a7.99 7.99 0 0 0-6.616 3.5H8v2H2v-6h2V6a9.98 9.98 0 0 1 8-4c5.523 0 10 4.477 10 10h-2a8 8 0 0 0-8-8m-8 8a8 8 0 0 0 14.616 4.5H16v-2h6v6h-2V18a9.98 9.98 0 0 1-8 4C6.477 22 2 17.523 2 12z"/>
+                                        </svg>
+                                        <span>Progreso</span>
+                                    </div>
+                                    <ul class="text-xs capitalize">
+                                        <li class="flex items-center justify-start px-6 py-1">
+                                            {{ form.pendiente(value="pendiente", checked=form.pendiente.data, class_="w-4 h-4 mr-2 text-verde-uajs bg-gris-perla border border-gris-antracita rounded focus:ring-verde-paris dark:focus:ring-verde-uajs dark:ring-offset-gray-800 focus:ring-2 dark:bg-gris-marengo dark:border-gris-perla appearance-none checked:bg-verde-paris checked:border-gris-marengo relative checked:before:block before:hidden before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:text-white before:content-['✔'] before:leading-none before:text-xs") }}
+                                            <span>{{ form.pendiente.label }}</span>
+                                        </li>
+                                        <li class="flex items-center justify-start px-6 py-1">
+                                            {{ form.aceptada(value="aceptada", checked=form.aceptada.data, class_="w-4 h-4 mr-2 text-verde-uajs bg-gris-perla border border-gris-antracita rounded focus:ring-verde-paris dark:focus:ring-verde-uajs dark:ring-offset-gray-800 focus:ring-2 dark:bg-gris-marengo dark:border-gris-perla appearance-none checked:bg-verde-paris checked:border-gris-marengo relative checked:before:block before:hidden before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:text-white before:content-['✔'] before:leading-none before:text-xs") }}
+                                            <span>{{ form.aceptada.label }}</span>
+                                        </li>
+                                        <li class="flex items-center justify-start px-6 py-1">
+                                            {{ form.cancelada(value="cancelada", checked=form.cancelada.data, class_="w-4 h-4 mr-2 text-verde-uajs bg-gris-perla border border-gris-antracita rounded focus:ring-verde-paris dark:focus:ring-verde-uajs dark:ring-offset-gray-800 focus:ring-2 dark:bg-gris-marengo dark:border-gris-perla appearance-none checked:bg-verde-paris checked:border-gris-marengo relative checked:before:block before:hidden before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:text-white before:content-['✔'] before:leading-none before:text-xs") }}
+                                            <span>{{ form.cancelada.label }}</span>
+                                        </li>
+                                        <li class="flex items-center justify-start px-6 py-1">
+                                            {{ form.atendida(value="atendida", checked=form.atendida.data, class_="w-4 h-4 mr-2 text-verde-uajs bg-gris-perla border border-gris-antracita rounded focus:ring-verde-paris dark:focus:ring-verde-uajs dark:ring-offset-gray-800 focus:ring-2 dark:bg-gris-marengo dark:border-gris-perla appearance-none checked:bg-verde-paris checked:border-gris-marengo relative checked:before:block before:hidden before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:text-white before:content-['✔'] before:leading-none before:text-xs") }}
+                                            <span>{{ form.atendida.label }}</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="relative w-full" id="busqueda">
+                        {{ form.buscar(type_='search', class_='block p-2.5 w-full z-20 text-sm 2xl:text-lg 3xl:text-2xl text-gray-900 bg-gray-50 rounded-tr-md border-b border-gris-perla focus:outline-none focus:ring-gris-antracita focus:bg-gris-antracita dark:bg-gray-700 dark:border-gris-marengo dark:placeholder-gray-400 dark:text-white dark:focus:border-gris-antracita truncate', placeholder_='Buscar por solicitante, motivo de consulta, programa...') }}
+                        <button type="submit" class="absolute top-0 end-0 p-2.5 text-sm 2xl:text-lg font-medium h-full text-gray-900 bg-plata border-b border-l border-gris-perla hover:bg-gris-perla focus:ring-2 focus:outline-none focus:ring-plata dark:bg-gris-marengo dark:hover:bg-gris-antracita dark:focus:ring-gris-marengo dark:text-white dark:border-gris-marengo" :class="{ 'rounded-tr-md': lastChildId === 'busqueda' }">
+                            <svg class="w-4 h-4 2xl:w-5 2xl:h-5 3xl:w-6 3xl:h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                            </svg>
+                            <span class="sr-only">Buscar</span>
+                        </button>
+                    </div>
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages or alertas %}
+                            <div id="alerta">
+                                <button @click="showModal('alertas')" data-dropdown-toggle="dropdown" class="h-full flex-shrink-0 z-10 inline-flex items-center py-1.5 px-3 text-sm 2xl:text-lg 3xl:text-2xl font-medium text-center text-white bg-verde-uajs rounded-tr-md border border-verde-paris hover:bg-verde-paris focus:ring-2 focus:outline-none focus:ring-verde-paris dark:bg-verde-paris dark:hover:bg-verde-uajs dark:focus:ring-verde-uajs" type="button">
+                                    <svg class="w-7 h-7 2xl:w-8 2xl:h-8 3xl:w-10 3xl:h-10" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M11.209 3.816a1 1 0 0 0-1.966.368l.325 1.74a5.338 5.338 0 0 0-2.8 5.762l.276 1.473.055.296c.258 1.374-.228 2.262-.63 2.998-.285.52-.527.964-.437 1.449.11.586.22 1.173.75 1.074l12.7-2.377c.528-.1.418-.685.308-1.27-.103-.564-.636-1.123-1.195-1.711-.606-.636-1.243-1.306-1.404-2.051-.233-1.085-.275-1.387-.303-1.587-.009-.063-.016-.117-.028-.182a5.338 5.338 0 0 0-5.353-4.39l-.298-1.592Z"/>
+                                        <path fill-rule="evenodd" d="M6.539 4.278a1 1 0 0 1 .07 1.412c-1.115 1.23-1.705 2.605-1.83 4.26a1 1 0 0 1-1.995-.15c.16-2.099.929-3.893 2.342-5.453a1 1 0 0 1 1.413-.069Z" clip-rule="evenodd"/>
+                                        <path d="M8.95 19.7c.7.8 1.7 1.3 2.8 1.3 1.6 0 2.9-1.1 3.3-2.5l-6.1 1.2Z"/>
+                                    </svg>
+                                </button>
+                                <div v-if="ventana === 'alertas'" id="alertas" class="absolute right-0 z-10 mt-2 min-w-48 origin-top-right rounded-md border border-gris-perla bg-white py-2 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gris-antracita dark:border-gris-marengo">
+                                    <ul class="block">
+                                        {% for category, message in messages %}
+                                            {% if category == 'success' %}
+                                                <div class="block flex items-center justify-start px-4 py-2 2xl:text-xl 3xl:text-2xl text-gray-700 border-b border-gris-perla hover:bg-gris-antracita hover:text-plata dark:text-white transition duration-700 dark:hover:bg-plata dark:hover:text-gris-antracita dark:border-gris-marengo" role="alert">
+                                                    <svg class="flex-shrink-0 inline w-6 h-6 me-3" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+                                                        <path fill="currentColor" d="m10.6 13.4l-2.15-2.15q-.275-.275-.7-.275t-.7.275t-.275.7t.275.7L9.9 15.5q.3.3.7.3t.7-.3l5.65-5.65q.275-.275.275-.7t-.275-.7t-.7-.275t-.7.275zM5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h14q.825 0 1.413.588T21 5v14q0 .825-.587 1.413T19 21z"/>
+                                                    </svg>
+                                                    <li class="font-medium">{{ message|safe }}</li>
+                                                </div>
+                                            {% endif %}
+                                            {% if category == 'error' %}
+                                                <div class="block flex items-center justify-start px-4 py-2 2xl:text-xl 3xl:text-2xl text-gray-700 border-b border-gris-perla hover:bg-gris-antracita hover:text-plata dark:text-white transition duration-700 dark:hover:bg-plata dark:hover:text-gris-antracita dark:border-gris-marengo" role="alert">
+                                                    <svg class="flex-shrink-0 inline w-6 h-6 me-3" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+                                                        <path fill="currentColor" d="m8.4 17l3.6-3.6l3.6 3.6l1.4-1.4l-3.6-3.6L17 8.4L15.6 7L12 10.6L8.4 7L7 8.4l3.6 3.6L7 15.6zm3.6 5q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22"/>
+                                                    </svg>
+                                                    <li class="font-medium">{{ message|safe }}</li>
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% for alerta in alertas %}
+                                            {% if alerta.category == 'warning' %}
+                                                <li>
+                                                    <a href="{{ alerta.enlace }}" class="block flex items-center justify-start px-4 py-2 2xl:text-xl 3xl:text-2xl text-gray-700 border-b border-gris-perla hover:bg-gris-antracita hover:text-plata dark:text-white transition duration-700 dark:hover:bg-plata dark:hover:text-gris-antracita dark:border-gris-marengo" role="alert">
+                                                        <svg class="flex-shrink-0 inline w-6 h-6 me-3" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+                                                            <path fill="currentColor" d="M2.725 21q-.275 0-.5-.137t-.35-.363t-.137-.488t.137-.512l9.25-16q.15-.25.388-.375T12 3t.488.125t.387.375l9.25 16q.15.25.138.513t-.138.487t-.35.363t-.5.137zM12 18q.425 0 .713-.288T13 17t-.288-.712T12 16t-.712.288T11 17t.288.713T12 18m0-3q.425 0 .713-.288T13 14v-3q0-.425-.288-.712T12 10t-.712.288T11 11v3q0 .425.288.713T12 15"/>
+                                                        </svg>
+                                                        <span class="font-medium">{{ alerta.message }}</span>
+                                                    </a>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endwith %}
+                </div>
+            </form>
+            {% if citas %}
+                <table class="w-full">
+                    <thead>
+                        <tr class="grid grid-cols-4 md:grid-cols-11 gap-2 w-full px-2 mb-2 text-sm md:text-lg 2xl:text-xl 3xl:text-2xl">
+                            <th class="col-span-2 text-left font-normal block md:hidden">
+                                Detalles de solicitud
+                            </th>
+                            <th class="col-span-2 text-left font-normal hidden md:block">
+                                Solicitante
+                            </th>
+                            <th class="col-span-6 text-left font-normal hidden md:block">
+                                Motivo de consulta
+                            </th>
+                            <th class="col-span-1 text-left font-normal">
+                                Progreso
+                            </th>
+                            <th class="col-span-1 md:col-span-2 text-right font-normal">
+                                Fecha y Hora
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="border-t border-gris-perla dark:border-gris-marengo">
+                        {% for cita in citas %}
+                            {% if cita.estado == "no leido" %}
+                                <tr @click="navigateToDetail({{cita.id}})" class="grid grid-cols-4 md:grid-cols-11 gap-2 w-full font-semibold block w-full p-2 bg-white text-gray-800 border-b border-gris-perla hover:-translate-y-1 ease-in-out delay-150 duration-300 hover:bg-gris-perla dark:bg-gray-700 dark:text-white dark:hover:bg-gris-antracita dark:border-gris-marengo cursor-pointer">
+                                    <td class="col-span-2 block md:hidden">
+                                        <a href="{{ url_for('detalleCita.detalle_cita_view', id=cita.id) }}" class="block text-xs md:text-sm 2xl:text-lg 3xl:text-xl text-left truncate">
+                                            {% if cita.nombres == "ANÓNIMO" and cita.apellidos == "ANÓNIMO" %}
+                                                Anónimo
+                                            {% else %}
+                                                {{ cita.nombres.title() }} {{ cita.apellidos.title() }}
+                                            {% endif %}
+                                        </a>
+                                        <a href="{{ url_for('detalleCita.detalle_cita_view', id=cita.id) }}" class="block text-xs md:text-sm 2xl:text-lg 3xl:text-xl text-left italic truncate">
+                                            {{ cita.asunto.capitalize() }}
+                                        </a>
+                                    </td>
+                                    <td class="col-span-2 text-xs md:text-sm 2xl:text-lg 3xl:text-xl text-left hidden md:block">
+                                        <a href="{{ url_for('detalleCita.detalle_cita_view', id=cita.id) }}" class="block truncate">
+                                            {% if cita.nombres == "ANÓNIMO" and cita.apellidos == "ANÓNIMO" %}
+                                                Anónimo
+                                            {% else %}
+                                                {{ cita.nombres.title() }} {{ cita.apellidos.title() }}
+                                            {% endif %}
+                                        </a>
+                                    </td>
+                                    <td class="col-span-6 text-xs md:text-sm 2xl:text-lg 3xl:text-xl text-left italic hidden md:block">
+                                        <a href="{{ url_for('detalleCita.detalle_cita_view', id=cita.id) }}" class="block truncate">
+                                            {{ cita.asunto.capitalize() }}
+                                        </a>
+                                    </td>
+                                    <td class="col-span-1 text-xs md:text-sm 2xl:text-lg 3xl:text-xl text-left">
+                                        <a href="{{ url_for('detalleCita.detalle_cita_view', id=cita.id) }}" class="block truncate">
+                                            {{ cita.progreso.capitalize() }}
+                                        </a>
+                                    </td>
+                                    <td class="col-span-1 md:col-span-2 flex justify-end text-xs md:text-sm 2xl:text-lg 3xl:text-xl text-right">
+                                        <a href="{{ url_for('detalleCita.detalle_cita_view', id=cita.id) }}" class="block flex justify-end truncate">
+                                            <span class="truncate">{{ cita.fecha.title() }} - {{ cita.hora.upper() }}</span>
+                                            <svg class="w-5 h-5 2xl:w-7 2xl:h-7 3xl:w-8 3xl:h-8 text-verde-uajs dark:text-white ml-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                                <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v5a1 1 0 1 0 2 0V8Zm-1 7a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12Z" clip-rule="evenodd"/>
+                                            </svg>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr @click="navigateToDetail({{cita.id}})" class="grid grid-cols-4 md:grid-cols-11 gap-2 block w-full p-2 bg-gray-100 text-gray-600 border-b border-gris-perla transition-colors duration-500 hover:bg-plata dark:bg-gris-marengo dark:text-plata dark:hover:bg-gris-perla dark:border-gris-antracita cursor-pointer">
+                                    <td class="col-span-2 block md:hidden">
+                                        <a href="{{ url_for('detalleCita.detalle_cita_view', id=cita.id) }}" class="block text-xs md:text-sm 2xl:text-lg 3xl:text-xl text-left truncate">
+                                            {% if cita.nombres == "ANÓNIMO" and cita.apellidos == "ANÓNIMO" %}
+                                                Anónimo
+                                            {% else %}
+                                                {{ cita.nombres.title() }} {{ cita.apellidos.title() }}
+                                            {% endif %}
+                                        </a>
+                                        <a href="{{ url_for('detalleCita.detalle_cita_view', id=cita.id) }}" class="block text-xs md:text-sm 2xl:text-lg 3xl:text-xl text-left italic truncate">
+                                            {{ cita.asunto.capitalize() }}
+                                        </a>
+                                    </td>
+                                    <td class="col-span-2 text-xs md:text-sm 2xl:text-lg 3xl:text-xl text-left hidden md:block">
+                                        <a href="{{ url_for('detalleCita.detalle_cita_view', id=cita.id) }}" class="block truncate">
+                                            {% if cita.nombres == "ANÓNIMO" and cita.apellidos == "ANÓNIMO" %}
+                                                Anónimo
+                                            {% else %}
+                                                {{ cita.nombres.title() }} {{ cita.apellidos.title() }}
+                                            {% endif %}
+                                        </a>
+                                    </td>
+                                    <td class="col-span-6 text-xs md:text-sm 2xl:text-lg 3xl:text-xl text-left italic hidden md:block">
+                                        <a href="{{ url_for('detalleCita.detalle_cita_view', id=cita.id) }}" class="block truncate">
+                                            {{ cita.asunto.capitalize() }}
+                                        </a>
+                                    </td>
+                                    <td class="col-span-1 text-xs md:text-sm 2xl:text-lg 3xl:text-xl text-left">
+                                        <a href="{{ url_for('detalleCita.detalle_cita_view', id=cita.id) }}" class="block truncate">
+                                            {{ cita.progreso.capitalize() }}
+                                        </a>
+                                    </td>
+                                    <td class="col-span-1 md:col-span-2 flex justify-end text-xs md:text-sm 2xl:text-lg 3xl:text-xl text-right">
+                                        <a href="{{ url_for('detalleCita.detalle_cita_view', id=cita.id) }}" class="block truncate">
+                                            <span class="truncate">{{ cita.fecha.title() }} - {{ cita.hora.upper() }}</span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div class="block w-full p-2 bg-white text-gray-800 border-b border-gris-perla dark:bg-gray-700 dark:text-white dark:border-gris-marengo">
+                    <p class="text-center">No se Encontraron resultados</p>
+                </div>
+            {% endif %}
+            {% if total_paginas > 1%}
+                <div class="px-1 w-full flex items-center justify-center overflow-auto">
+                    <nav>
+                        <p class="text-center">Página {{ page_num }} de {{ total_paginas }}</p>
+                        <ul class="flex items-center space-x-px h-8 text-xs md:text-sm">
+                            <li>
+                                {% if page_num > 1 %}
+                                    <a href="{{ url_for('citas.Solicitudes', page_num=page_num - 1, buscar=form.buscar.data) }}{{ filtros_aplicados }}" class="flex items-center justify-center px-2 md:p-3 h-5 md:h-8 ms-0 leading-tight text-gris-marengo bg-white border border-e-0 border-gris-perla rounded-s-md md:rounded-s-lg hover:bg-plata hover:text-gris-antracita dark:bg-gray-900 dark:border-gris-antracita dark:text-gris-perla dark:hover:bg-gris-marengo dark:hover:text-white">
+                                        <span class="sr-only">Anterior</span>
+                                        <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
+                                        </svg>
+                                    </a>
+                                {% else %}
+                                    <div class="flex items-center justify-center px-2 md:p-3 h-5 md:h-8 ms-0 leading-tight text-gris-marengo bg-white border border-e-0 border-gris-perla rounded-s-md md:rounded-s-lg hover:bg-plata hover:text-gris-antracita dark:bg-gray-900 dark:border-gris-antracita dark:text-gris-perla dark:hover:bg-gris-marengo dark:hover:text-white">
+                                        <span class="sr-only">Anterior</span>
+                                        <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
+                                        </svg>
+                                    </div>
+                                {% endif %}
+                            </li>
+                            {% for i in range(1, total_paginas + 1) %}
+                                {% if i == 1 or i == total_paginas or (i >= page_num - 4 and i <= page_num + 4) %}
+                                    <li>
+                                        {% if i == page_num %}
+                                            <span class="flex items-center justify-center px-2 md:p-3 h-5 md:h-8 leading-tight text-white bg-verde-uajs border border-gris-perla dark:bg-verde-paris dark:border-gris-antracita dark:text-black">{{ i }}</span>
+                                        {% else %}
+                                            <a href="{{ url_for('citas.Solicitudes', page_num=i, buscar=form.buscar.data) }}{{ filtros_aplicados }}" class="flex items-center justify-center px-2 md:p-3 h-5 md:h-8 leading-tight text-gris-marengo bg-white border border-gris-perla hover:bg-plata hover:text-gris-antracita dark:bg-gray-900 dark:border-gris-antracita dark:text-gris-perla dark:hover:bg-gris-marengo dark:hover:text-white">{{ i }}</a>
+                                        {% endif %}
+                                    </li>
+                                {% elif i == page_num - 5 or i == page_num + 5 %}
+                                    <li>
+                                        <span class="flex items-center justify-center px-2 md:p-3 h-5 md:h-8 leading-tight text-gris-marengo bg-white border border-gris-perla hover:bg-plata hover:text-gris-antracita dark:bg-gray-900 dark:border-gris-antracita dark:text-gris-perla dark:hover:bg-gris-marengo dark:hover:text-white">…</span>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                            <li>
+                                {% if page_num < total_paginas %}
+                                    <a href="{{ url_for('citas.Solicitudes', page_num=page_num + 1, buscar=form.buscar.data) }}{{ filtros_aplicados }}" class="flex items-center justify-center px-2 md:p-3 h-5 md:h-8 leading-tight text-gris-marengo bg-white border border-gris-perla rounded-e-md md:rounded-e-lg hover:bg-plata hover:text-gris-antracita dark:bg-gray-900 dark:border-gris-antracita dark:text-gris-perla dark:hover:bg-gris-marengo dark:hover:text-white">
+                                        <span class="sr-only">Siguiente</span>
+                                        <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                                        </svg>
+                                    </a>
+                                {% else %}
+                                    <div class="flex items-center justify-center px-2 md:p-3 h-5 md:h-8 leading-tight text-gris-marengo bg-white border border-gris-perla rounded-e-md md:rounded-e-lg hover:bg-plata hover:text-gris-antracita dark:bg-gray-900 dark:border-gris-antracita dark:text-gris-perla dark:hover:bg-gris-marengo dark:hover:text-white">
+                                        <span class="sr-only">Siguiente</span>
+                                        <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                                        </svg>
+                                    </div>
+                                {% endif %}
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+{% endblock %}
